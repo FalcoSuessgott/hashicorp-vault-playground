@@ -14,14 +14,8 @@ resource "docker_container" "haproxy" {
   image = "haproxy:latest"
 
   ports {
-    internal = 80
-    external = 80
-    ip       = "0.0.0.0"
-  }
-
-  ports {
     internal = 443
-    external = 443
+    external = var.haproxy.port
     ip       = "0.0.0.0"
   }
 
@@ -34,6 +28,7 @@ resource "docker_container" "haproxy" {
   networks_advanced {
     name = docker_network.network.name
   }
+
   lifecycle {
     ignore_changes = all
   }

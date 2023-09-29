@@ -1,0 +1,28 @@
+name: Terraform
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: hashicorp/setup-terraform@v2
+      - uses: eLco/setup-vault@v1
+      - run: terraform init
+      - run: terraform fmt -check -recursive .
+      - run: terraform validate -no-color
+      - run: terraform plan -no-color
+      - run: terraform apply -auto-approve
+      - name: verify Vault cluster members
+        run: |
+          source .envrc
+          vault operator raft list-peers
+          [[ "$(vault operator raft list-peers | jq '.data.config.servers' | jq length)" = 3 ]] && echo "pass"
+        env:
+          VAULT_FORMAT: json
+      - run: terraform destroy -auto-approve

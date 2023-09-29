@@ -20,6 +20,7 @@ variable "vault" {
 variable "haproxy" {
   type = object({
     enabled = optional(bool, true)
+    port    = optional(number, 443)
   })
 }
 
