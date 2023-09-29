@@ -1,0 +1,15 @@
+scrape_configs:
+  - job_name: vault
+    metrics_path: /v1/sys/metrics
+    params:
+      format: ['prometheus']
+    scheme: https
+    authorization:
+      credentials_file: /etc/prometheus/prometheus-token
+    tls_config:
+      ca_file: /etc/prometheus/vault_ca_file
+    static_configs:
+    - targets:
+%{ for name, cfg in vaults ~}
+      - "${cfg.ip}:8200"
+%{ endfor }
