@@ -5,7 +5,7 @@ Bootstrap a Vault HA Cluster locally including TLS, Unsealing, HAProxy, Promethe
 ![demo](./assets/demo.gif)
 
 **This will expose:**
-* HAProxy proxying the Vault UI using [Vaults Health Check](https://developer.hashicorp.com/vault/api-docs/system/health) under https://locahost 
+* HAProxy proxying the Vault UI using [Vaults Health Check](https://developer.hashicorp.com/vault/api-docs/system/health) under https://locahost
 * Prometheus UI under https://localhost:9090
 * Grafana UI under https://localhost:3000
 
@@ -49,27 +49,30 @@ See `variables.tf` for configuration options:
 ```hcl
 # create a terraform.tfvars and customize the settings
 vault = {
-  ip_settings        = "172.16.10.0/24"
-  vault_enterprise   = false
-  vault_version      = "1.15"
-  vault_nodes        = 3
-  autounseal_enabled = false
+  ip_settings        = "172.16.10.0/24" 
+  vault_enterprise   = false            
+  vault_version      = "latest"         
+  vault_nodes        = 3                
+  autounseal_enabled = false            
   keys = {
-    shares    = 5
-    threshold = 3
+    shares    = 5                       
+    threshold = 3                       
   }
 }
 
 haproxy = {
   enabled = true
+  port = 443
 }
 
 prometheus = {
   enabled = true
+  port = 9090
 }
 
 grafana = {
   enabled = true
+  port = 3000 
 }
 ```
 
@@ -84,3 +87,5 @@ grafana = {
 * [x] grafana prometheus
 * [ ] nodeexporter
 * [ ] keycloak sso
+* [ ] persistence
+* [ ] var validation
