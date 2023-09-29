@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+### [1.0.1](https://github.com/FalcoSuessgott/hashicorp-vault-playground/compare/v1.0.0...v1.0.1) (2023-09-29)
+
+
+### Bug Fixes
+
+* **tf:** several improvements ([#4](https://github.com/FalcoSuessgott/hashicorp-vault-playground/issues/4)) ([6e381a5](https://github.com/FalcoSuessgott/hashicorp-vault-playground/commit/6e381a580e2f0d943ce442f7ea0cab695951328b))
+
 ## 1.0.0 (2023-09-29)
 
 
