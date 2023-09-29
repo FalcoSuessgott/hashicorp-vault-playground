@@ -14,7 +14,7 @@ storage "raft" {
 
   %{ for name, cfg in vaults ~}
   retry_join {
-    leader_api_addr = "https://${cfg.ip}:8200"
+    leader_api_addr = "https://${name}:8200"
     leader_ca_cert_file = "/vault/config/ca.crt"
     leader_client_cert_file = "/vault/config/vault.crt"
     leader_client_key_file = "/vault/config/vault.key"

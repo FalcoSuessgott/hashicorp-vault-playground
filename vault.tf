@@ -1,7 +1,7 @@
 locals {
   vault = {
-    for v in range(0, var.vault.vault_nodes) : format("vault-%02d", v + 1) => {
-      port = 8000 + (v + 1)
+    for v in range(0, var.vault.nodes) : format("vault-%02d", v + 1) => {
+      port = var.vault.base_port + (v + 1)
       ip   = cidrhost(var.vault.ip_subnet, 10 + v)
     }
   }
@@ -19,7 +19,7 @@ resource "docker_container" "vault" {
   for_each = local.vault
 
   name  = each.key
-  image = "hashicorp/vault:${var.vault.vault_version}"
+  image = "hashicorp/vault:${var.vault.version}"
 
   env = [
     "VAULT_ADDR=https://0.0.0.:8200",
@@ -53,6 +53,7 @@ resource "docker_container" "vault" {
   }
 
   depends_on = [
+    local_file.vault,
     local_file.ca_cert,
     local_file.vault_priv_key,
     local_file.vault_cert

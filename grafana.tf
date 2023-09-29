@@ -1,12 +1,17 @@
 resource "local_file" "grafana" {
+  count = var.grafana.enabled ? 1 : 0
+
   content = templatefile("./files/grafana.yml.tmpl", {
     prometheus_ip   = cidrhost(var.vault.ip_subnet, 20)
     prometheus_port = var.prometheus.port
   })
+
   filename = "./grafana/grafana.yml"
 }
 
 resource "docker_container" "grafana" {
+  count = var.grafana.enabled ? 1 : 0
+
   name  = "grafana"
   image = "grafana/grafana:latest"
 
@@ -17,7 +22,7 @@ resource "docker_container" "grafana" {
   }
 
   volumes {
-    host_path      = abspath("./grafana/grafana.yml")
+    host_path      = abspath(local_file.grafana[0].filename)
     container_path = "/etc/grafana/provisioning/datasources/prometheus_datasource.yml"
     read_only      = true
   }
@@ -38,7 +43,7 @@ resource "docker_container" "grafana" {
     name = docker_network.network.name
   }
 
-  #   lifecycle {
-  #     ignore_changes = all
-  #   }
+  lifecycle {
+    ignore_changes = all
+  }
 }

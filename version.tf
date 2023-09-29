@@ -4,7 +4,7 @@ terraform {
   required_providers {
     docker = {
       source  = "kreuzwerker/docker"
-      version = "3.0.1"
+      version = "3.0.2"
     }
     tls = {
       source  = "hashicorp/tls"
@@ -12,7 +12,7 @@ terraform {
     }
     vault = {
       source  = "hashicorp/vault"
-      version = "3.12.0"
+      version = "3.20.1"
     }
     local = {
       source  = "hashicorp/local"
