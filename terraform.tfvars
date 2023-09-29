@@ -1,8 +1,9 @@
 vault = {
   ip_settings        = "172.16.10.0/24"
-  vault_enterprise   = false
-  vault_version      = "1.15"
-  vault_nodes        = 3
+  enterprise         = false
+  version            = "1.15"
+  base_port          = 8000
+  nodes              = 3
   autounseal_enabled = false
   keys = {
     shares    = 5

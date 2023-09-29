@@ -35,5 +35,5 @@ backend vault_https
      option httpchk GET /v1/sys/health
      http-check expect status 200
      %{ for name, cfg in vaults ~}
-server ${name} ${cfg.ip}:8200 check check-ssl verify none
+server ${name} ${name}:8200 check check-ssl verify none
      %{ endfor }

@@ -1,9 +1,10 @@
 variable "vault" {
   type = object({
     ip_subnet          = optional(string, "172.16.10.0/24")
-    vault_enterprise   = optional(bool, false)
-    vault_version      = optional(string, "latest")
-    vault_nodes        = optional(number, 3)
+    enterprise         = optional(bool, false)
+    version            = optional(string, "latest")
+    base_port          = optional(number, 8000)
+    nodes              = optional(number, 3)
     autounseal_enabled = optional(bool, false)
     keys = optional(object({
       shares    = number

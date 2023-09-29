@@ -5,4 +5,4 @@
 **/*.crt
 **/*.key
 **/prometheus-token
-**/.vault-token
+**/.vault_token

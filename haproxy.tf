@@ -4,6 +4,7 @@ resource "local_file" "haproxy" {
   content = templatefile("./files/haproxy.cfg.tmpl", {
     vaults = local.vault
   })
+
   filename = "./haproxy/haproxy.cfg"
 }
 
@@ -20,7 +21,7 @@ resource "docker_container" "haproxy" {
   }
 
   volumes {
-    host_path      = abspath("./haproxy/haproxy.cfg")
+    host_path      = abspath(local_file.haproxy[0].filename)
     container_path = "/usr/local/etc/haproxy/haproxy.cfg"
     read_only      = true
   }
