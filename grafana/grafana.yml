@@ -5,7 +5,7 @@ datasources:
   type: prometheus
   access: server
   orgId: 1
-  url: http://prometheus:${prometheus_port}
+  url: http://prometheus:9090
   password:
   user:
   database:

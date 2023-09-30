@@ -1,12 +1,10 @@
 variable "vault" {
   type = object({
-    ip_subnet          = optional(string, "172.16.10.0/24")
-    enterprise         = optional(bool, false)
-    version            = optional(string, "latest")
-    base_port          = optional(number, 8000)
-    nodes              = optional(number, 3)
-    autounseal_enabled = optional(bool, false)
-    keys = optional(object({
+    ip_subnet = optional(string, "172.16.10.0/24")
+    version   = optional(string, "latest")
+    base_port = optional(number, 8000)
+    nodes     = optional(number, 3)
+    initialization = optional(object({
       shares    = number
       threshold = number
       }), {
@@ -14,27 +12,11 @@ variable "vault" {
       threshold = 3
     })
   })
-
-  default = null
 }
 
-variable "haproxy" {
+variable "minikube" {
   type = object({
-    enabled = optional(bool, true)
-    port    = optional(number, 443)
-  })
-}
-
-variable "grafana" {
-  type = object({
-    enabled = optional(bool, true)
-    port    = optional(number, 3000)
-  })
-}
-
-variable "prometheus" {
-  type = object({
-    enabled = optional(bool, true)
-    port    = optional(number, 9090)
+    enabled                  = optional(bool, true)
+    external_secrets_manager = optional(bool, true)
   })
 }

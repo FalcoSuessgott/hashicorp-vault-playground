@@ -1,5 +1,5 @@
 terraform {
-  required_version = ">= 1.5.0"
+  required_version = ">= 1.6.0"
 
   required_providers {
     docker = {
@@ -22,11 +22,30 @@ terraform {
       source  = "devops-rob/terracurl"
       version = "1.1.0"
     }
+    minikube = {
+      source  = "scott-the-programmer/minikube"
+      version = "0.3.5"
+    }
+    kubernetes = {
+      source  = "hashicorp/kubernetes"
+      version = "2.23.0"
+    }
+    helm = {
+      source  = "hashicorp/helm"
+      version = "2.11.0"
+    }
+    kubectl = {
+      source  = "gavinbunney/kubectl"
+      version = "1.14.0"
+    }
     time = {
       source  = "hashicorp/time"
       version = "0.9.1"
     }
-
+    http = {
+      source  = "hashicorp/http"
+      version = "3.4.0"
+    }
   }
 }
 
@@ -34,7 +53,30 @@ provider "terracurl" {}
 provider "local" {}
 provider "tls" {}
 provider "time" {}
+provider "minikube" {}
 
 provider "docker" {
   host = "unix:///var/run/docker.sock"
+}
+
+provider "vault" {
+  address      = "https://127.0.0.1"
+  token        = try(file(".vault_token"), "")
+  ca_cert_file = "./vault/ca.crt"
+}
+
+provider "kubernetes" {
+  host                   = module.minikube[0].kubeconfig.host
+  client_certificate     = module.minikube[0].kubeconfig.client_certificate
+  client_key             = module.minikube[0].kubeconfig.client_key
+  cluster_ca_certificate = module.minikube[0].kubeconfig.cluster_ca_certificate
+}
+
+provider "helm" {
+  kubernetes {
+    host                   = module.minikube[0].kubeconfig.host
+    client_certificate     = module.minikube[0].kubeconfig.client_certificate
+    client_key             = module.minikube[0].kubeconfig.client_key
+    cluster_ca_certificate = module.minikube[0].kubeconfig.cluster_ca_certificate
+  }
 }

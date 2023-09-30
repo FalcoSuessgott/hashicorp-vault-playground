@@ -9,8 +9,7 @@ resource "tls_self_signed_cert" "root_cert" {
   private_key_pem = tls_private_key.priv_key.private_key_pem
 
   subject {
-    common_name  = "sva.de"
-    organization = "SVA GmbH"
+    common_name = var.ca_cn
   }
 
   validity_period_hours = 86000
@@ -36,12 +35,11 @@ resource "tls_cert_request" "csr" {
   private_key_pem = tls_private_key.vault_priv_key.private_key_pem
 
   subject {
-    common_name  = "vault.sva.de"
-    organization = "vault"
+    common_name = var.cert_cn
   }
 
-  dns_names    = keys(local.vault)
-  ip_addresses = concat(["127.0.0.1"], [for v in local.vault : v.ip])
+  dns_names    = var.dns_sans
+  ip_addresses = var.ip_sans
 }
 
 # 4. sign the csr using the root ca
@@ -50,15 +48,13 @@ resource "tls_locally_signed_cert" "sign_csr" {
   ca_private_key_pem    = tls_private_key.priv_key.private_key_pem
   ca_cert_pem           = tls_self_signed_cert.root_cert.cert_pem
   validity_period_hours = 86000
-  is_ca_certificate     = true
+  is_ca_certificate     = false
 
   allowed_uses = [
     "key_encipherment",
     "digital_signature",
-    "cert_signing",
     "server_auth",
   ]
-
 }
 
 # 5. write certs to vault dir
