@@ -3,6 +3,6 @@ resource "docker_network" "network" {
   internal = false
 
   ipam_config {
-    subnet = var.vault.ip_subnet
+    subnet = var.ip_subnet
   }
 }

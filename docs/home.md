@@ -1,4 +1,4 @@
-# HashiCorp Vault Playground [![Terraform](https://github.com/FalcoSuessgott/hashicorp-vault-playground/actions/workflows/terraform.yml/badge.svg)](https://github.com/FalcoSuessgott/hashicorp-vault-playground/actions/workflows/terraform.yml)
+# HashiCorp Vault Playground
 Bootstrap a local Vault HA Cluster with many useful learning labs in under a minute using only terraform, docker & minikube!
 
 ## Demo

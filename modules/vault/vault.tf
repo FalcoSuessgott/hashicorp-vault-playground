@@ -1,25 +1,25 @@
 locals {
-  vault = {
-    for v in range(0, var.vault.nodes) : format("vault-%02d", v + 1) => {
-      port = var.vault.base_port + (v + 1)
-      ip   = cidrhost(var.vault.ip_subnet, 10 + v)
+  vaults = {
+    for v in range(0, var.vault_nodes) : format("vault-%02d", v + 1) => {
+      port = var.base_port + (v + 1)
+      ip   = cidrhost(var.ip_subnet, 10 + v)
     }
   }
 }
 
 resource "local_file" "vault" {
-  content = templatefile("./files/vault.tmpl.hcl", {
-    vaults = local.vault
+  content = templatefile("./templates/vault.tmpl.hcl", {
+    vaults = local.vaults
   })
 
   filename = "./vault/vault.hcl"
 }
 
 resource "docker_container" "vault" {
-  for_each = local.vault
+  for_each = local.vaults
 
   name  = each.key
-  image = "hashicorp/vault:${var.vault.version}"
+  image = "hashicorp/vault:${var.vault_version}"
 
   env = [
     "VAULT_ADDR=https://0.0.0.:8200",
@@ -47,47 +47,47 @@ resource "docker_container" "vault" {
 
   command = ["server"]
 
+  # allow vault access localhost
+  host {
+    host = "host.docker.internal"
+    ip   = "host-gateway"
+  }
+
   networks_advanced {
     name         = docker_network.network.name
     ipv4_address = each.value.ip
   }
-
-  depends_on = [
-    local_file.vault,
-    local_file.ca_cert,
-    local_file.vault_priv_key,
-    local_file.vault_cert
-  ]
 
   lifecycle {
     ignore_changes = all
   }
 }
 
-
 resource "terracurl_request" "init" {
-  name   = "vault-init"
-  url    = "https://127.0.0.1:${[for v in local.vault : v.port][0]}/v1/sys/init"
+  name = "vault-init"
+  # we cannot initialize via LB port since we have the Vault Health Check enabled
+  # which redirects requests to a leader, but we dont have one yet
+  url    = "https://127.0.0.1:${[for v in local.vaults : v.port][0]}/v1/sys/init"
   method = "POST"
 
   # https://developer.hashicorp.com/vault/api-docs/system/init
   request_body = jsonencode({
-    secret_shares      = !var.vault.autounseal_enabled ? var.vault.keys.shares : null
-    secret_threshold   = !var.vault.autounseal_enabled ? var.vault.keys.threshold : null
-    recovery_shares    = var.vault.autounseal_enabled ? var.vault.keys.shares : null
-    recovery_threshold = var.vault.autounseal_enabled ? var.vault.keys.threshold : null
+    secret_shares    = var.initialization.shares
+    secret_threshold = var.initialization.threshold
   })
 
   response_codes = [200, 204]
 
-  ca_cert_file = local_file.ca_cert.filename
-  key_file     = local_file.vault_priv_key.filename
-  cert_file    = local_file.vault_cert.filename
+  ca_cert_file = "${path.root}/${var.ca_cert_file}"
+  key_file     = "${path.root}/${var.key_file}"
+  cert_file    = "${path.root}/${var.cert_file}"
 
   retry_interval = 5
   max_retry      = 3
 
-  depends_on = [docker_container.vault]
+  depends_on = [
+    docker_container.vault,
+  ]
 }
 
 resource "local_file" "vault_token" {
@@ -97,8 +97,8 @@ resource "local_file" "vault_token" {
 
 locals {
   unseals = flatten([
-    for k, v in local.vault : [
-      for index in range(0, var.vault.keys.threshold) : merge(v, {
+    for k, v in local.vaults : [
+      for index in range(0, var.initialization.threshold) : merge(v, {
         node  = k
         index = index
         key   = jsondecode(terracurl_request.init.response).keys[index]
@@ -114,18 +114,19 @@ resource "terracurl_request" "unseal" {
   url    = "https://127.0.0.1:${each.value.port}/v1/sys/unseal"
   method = "POST"
 
-  # https://developer.hashicorp.com/vault/api-docs/system/init
+  # https://developer.hashicorp.com/vault/api-docs/system/unseal
   request_body = jsonencode({
     key = each.value.key
   })
 
   response_codes = [200, 204]
 
-  ca_cert_file = local_file.ca_cert.filename
-  key_file     = local_file.vault_priv_key.filename
-  cert_file    = local_file.vault_cert.filename
+  ca_cert_file = "${path.root}/${var.ca_cert_file}"
+  key_file     = "${path.root}/${var.key_file}"
+  cert_file    = "${path.root}/${var.cert_file}"
 
   retry_interval = 5
   max_retry      = 3
-  depends_on     = [terracurl_request.init]
+
+  depends_on = [terracurl_request.init]
 }

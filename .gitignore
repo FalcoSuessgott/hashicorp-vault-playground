@@ -6,3 +6,5 @@
 **/*.key
 **/prometheus-token
 **/.vault_token
+**/external_secret.yml
+**/secret_store.yml

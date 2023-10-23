@@ -1,27 +1,23 @@
 resource "local_file" "haproxy" {
-  count = var.haproxy.enabled ? 1 : 0
-
-  content = templatefile("./files/haproxy.cfg.tmpl", {
-    vaults = local.vault
+  content = templatefile("./templates/haproxy.cfg.tmpl", {
+    vaults = local.vaults
   })
 
   filename = "./haproxy/haproxy.cfg"
 }
 
 resource "docker_container" "haproxy" {
-  count = var.haproxy.enabled ? 1 : 0
-
   name  = "haproxy"
   image = "haproxy:latest"
 
   ports {
     internal = 443
-    external = var.haproxy.port
+    external = 443
     ip       = "0.0.0.0"
   }
 
   volumes {
-    host_path      = abspath(local_file.haproxy[0].filename)
+    host_path      = abspath(local_file.haproxy.filename)
     container_path = "/usr/local/etc/haproxy/haproxy.cfg"
     read_only      = true
   }
@@ -33,4 +29,6 @@ resource "docker_container" "haproxy" {
   lifecycle {
     ignore_changes = all
   }
+
+  depends_on = [docker_container.vault]
 }
