@@ -14,7 +14,7 @@ resource "minikube_cluster" "docker" {
   ]
 
   addons = [
-    # "dashboard",
+    "dashboard",
     "default-storageclass",
     "storage-provisioner"
   ]

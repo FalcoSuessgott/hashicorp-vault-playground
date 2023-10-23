@@ -2,7 +2,7 @@
 Bootstrap a local Vault HA Cluster with many useful learning labs in under a minute using only terraform, docker & minikube!
 
 ## Demo
-![demo](./assets/demo.gif)
+![demo](./docs/assets/demo.gif)
 
 ## Learning Labs
 * [x] Vault TLS Configuration
