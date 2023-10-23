@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+### [1.1.1](https://github.com/FalcoSuessgott/hashicorp-vault-playground/compare/v1.1.0...v1.1.1) (2023-10-23)
+
+
+### Bug Fixes
+
+* **mkdocs:** add requirements ([c1800e1](https://github.com/FalcoSuessgott/hashicorp-vault-playground/commit/c1800e1ef3be6e8d6a9b4e21b6f61451be8d7a2a))
+
 ## [1.1.0](https://github.com/FalcoSuessgott/hashicorp-vault-playground/compare/v1.0.1...v1.1.0) (2023-10-23)
 
 
