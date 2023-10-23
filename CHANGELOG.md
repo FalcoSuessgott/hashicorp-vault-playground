@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.0](https://github.com/FalcoSuessgott/hashicorp-vault-playground/compare/v1.0.1...v1.1.0) (2023-10-23)
+
+
+### Features
+
+* **minikue:** introdcue minikube ([#5](https://github.com/FalcoSuessgott/hashicorp-vault-playground/issues/5)) ([1444ca2](https://github.com/FalcoSuessgott/hashicorp-vault-playground/commit/1444ca2faeb32a4495ec406e3183ce450742aec2))
+
 ### [1.0.1](https://github.com/FalcoSuessgott/hashicorp-vault-playground/compare/v1.0.0...v1.0.1) (2023-09-29)
 
 
