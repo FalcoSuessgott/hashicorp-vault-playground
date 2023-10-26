@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.2.0](https://github.com/FalcoSuessgott/hashicorp-vault-playground/compare/v1.1.1...v1.2.0) (2023-10-26)
+
+
+### Features
+
+* **vso:** add vso ([#8](https://github.com/FalcoSuessgott/hashicorp-vault-playground/issues/8)) ([644a957](https://github.com/FalcoSuessgott/hashicorp-vault-playground/commit/644a95703046427bfe175b40b7ab9d262e733081))
+
 ### [1.1.1](https://github.com/FalcoSuessgott/hashicorp-vault-playground/compare/v1.1.0...v1.1.1) (2023-10-23)
 
 
