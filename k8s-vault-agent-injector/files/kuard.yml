@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kuard
+  namespace: vai
+spec:
+  selector:
+    matchLabels:
+      app: kuard
+  replicas: 1
+  template:
+    metadata:
+      annotations:
+      # https://developer.hashicorp.com/vault/docs/platform/k8s/injector/annotations
+        vault.hashicorp.com/auth-path: "auth/minikube-cluster"
+        vault.hashicorp.com/agent-inject: "true"
+        vault.hashicorp.com/role: "vai"
+        vault.hashicorp.com/tls-secret: ca-cert
+        vault.hashicorp.com/ca-cert: /vault/tls/ca.crt
+        vault.hashicorp.com/agent-inject-secret-secrets.txt: 'vai/data/secrets'
+        vault.hashicorp.com/agent-inject-template-secrets.txt: |
+          {{- with secret "vai/data/secrets" -}}
+          {
+            "username": "{{ .Data.data.username }}",
+            "password": "{{ .Data.data.password }}"
+          }
+          {{- end }}
+      labels:
+        app: kuard
+    spec:
+      containers:
+      - image: gcr.io/kuar-demo/kuard-amd64:1
+        imagePullPolicy: Always
+        name: kuard
+        ports:
+        - containerPort: 8080

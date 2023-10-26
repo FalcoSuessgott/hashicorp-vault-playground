@@ -64,7 +64,16 @@ module "esm" {
   depends_on = [module.vault_k8s]
 }
 
-# Deploy Vault Secrets Operator
+module "vai" {
+  count = var.minikube.enabled && var.minikube.vault_agent_injector ? 1 : 0
+
+  source = "./k8s-vault-agent-injector/terraform"
+
+  ca_cert = module.tls.ca.cert
+
+  depends_on = [module.vault_k8s]
+}
+
 module "vso" {
   count = var.minikube.enabled && var.minikube.vault_secrets_operator ? 1 : 0
 
@@ -75,7 +84,6 @@ module "vso" {
   depends_on = [module.vault_k8s]
 }
 
-# Deploy Cert Manager
 module "cm" {
   count = var.minikube.enabled && var.minikube.cert_manager ? 1 : 0
 

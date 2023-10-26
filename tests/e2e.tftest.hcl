@@ -147,3 +147,30 @@ run "kuard_verifies_using_ca_cert" {
     error_message = "Kuard Demo App is cannot be verified using the CA Cert (Want: 200, Got:${data.http.request.status_code})."
   }
 }
+
+# 11. setup vault agent injector
+run "setup_vai" {
+  plan_options {
+    target = [
+      module.vai
+    ]
+  }
+}
+
+# 12. check if vai injected secrets into pod
+run "vai_secret_is_injected" {
+  command = plan
+
+  module {
+    source = "./tests/external_cmd"
+  }
+
+  variables {
+    command = "kubectl exec -n vai -it $(kubectl get pods -l=app=kuard -n vai --no-headers -o custom-columns=\":metadata.name\") -- cat /vault/secrets/secrets.txt"
+  }
+
+  assert {
+    condition     = length(data.shell_script.command.output) == 2
+    error_message = "VAI Secret is not injected into Pod"
+  }
+}
