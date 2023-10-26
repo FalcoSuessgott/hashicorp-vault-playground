@@ -18,5 +18,6 @@ variable "minikube" {
   type = object({
     enabled                  = optional(bool, true)
     external_secrets_manager = optional(bool, true)
+    vault_secrets_operator   = optional(bool, true)
   })
 }

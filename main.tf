@@ -8,7 +8,7 @@ module "tls" {
   ip_sans = ["127.0.0.1"]
   dns_sans = concat(
     ["host.minikube.internal"],
-    [for v in range(0, 3) : format("vault-%02d", v + 1)]
+    [for v in range(0, var.vault.nodes) : format("vault-%02d", v + 1)]
   )
 }
 
@@ -53,6 +53,16 @@ module "esm" {
   count = var.minikube.enabled && var.minikube.external_secrets_manager ? 1 : 0
 
   source = "./modules/external-secrets-manager"
+
+  ca_cert = module.tls.ca_cert
+
+  depends_on = [module.vault_k8s]
+}
+
+module "vso" {
+  count = var.minikube.enabled && var.minikube.vault_secrets_operator ? 1 : 0
+
+  source = "./modules/vault-secrets-operator"
 
   ca_cert = module.tls.ca_cert
 
