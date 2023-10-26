@@ -1,0 +1,16 @@
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: vault-issuer
+  namespace: cm
+spec:
+  vault:
+    path: cert-manager-intermediate/sign/nip-io
+    server: https://host.minikube.internal
+    caBundle: ${ca_cert}
+    auth:
+      kubernetes:
+        role: cm
+        mountPath: /v1/auth/minikube-cluster
+        serviceAccountRef:
+          name: vault-issuer

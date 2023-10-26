@@ -2,6 +2,10 @@ output "ca_cert" {
   value = tls_self_signed_cert.root_cert.cert_pem
 }
 
+output "ca_key" {
+  value = tls_private_key.priv_key.private_key_pem
+}
+
 output "key" {
   sensitive = true
   value     = tls_private_key.vault_priv_key.private_key_pem

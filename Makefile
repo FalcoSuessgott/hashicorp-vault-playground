@@ -17,7 +17,6 @@ bootstrap: ## boostrap cluster
 	terraform init
 	terraform apply -target=module.minikube -auto-approve
 	terraform apply -auto-approve
-	terraform output summary
 
 .PHONY: teardown
 teardown: ## teadown cluster

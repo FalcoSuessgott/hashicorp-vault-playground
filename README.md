@@ -5,11 +5,12 @@ Bootstrap a local Vault HA Cluster with many useful learning labs in under a min
 ![demo](./docs/assets/demo.gif)
 
 ## Learning Labs
-* [x] Vault TLS Configuration
-* [x] Initialization & Unsealing
-* [x] HAProxy including Vaults Health Check
-* [x] Vault Kubernetes Auth Method
-* [x] External Secrets Manager
-* [x] Vault Secrets operator
-* [ ] Certmanager
+* [x] [Vault TLS Configuration](https://falcosuessgott.github.io/hashicorp-vault-playground/vault/#tls)
+* [x] [Initialization & Unsealing](https://falcosuessgott.github.io/hashicorp-vault-playground/vault/)
+* [x] [HAProxy including Vaults Health Check](https://falcosuessgott.github.io/hashicorp-vault-playground/haproxy/)
+* [x] [Vault Kubernetes Auth Method](https://falcosuessgott.github.io/hashicorp-vault-playground/minikube/) configured for Minikube
+* [x] [External Secrets Manager](https://falcosuessgott.github.io/hashicorp-vault-playground/esm/)
+* [x] [Vault Secrets operator](https://falcosuessgott.github.io/hashicorp-vault-playground/vso/)
+* [x] [Certmanager](https://falcosuessgott.github.io/hashicorp-vault-playground/cm/)
+* [ ] MySQL dynamic DB Credentials
 * [ ] Prometheus & Grafana + Vault Metrics

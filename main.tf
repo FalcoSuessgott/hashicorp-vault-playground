@@ -20,8 +20,6 @@ module "vault" {
   ip_subnet     = var.vault.ip_subnet
   vault_version = var.vault.version
 
-  #haproxy_port = var.haproxy.port
-
   initialization = {
     shares    = var.vault.initialization.shares
     threshold = var.vault.initialization.threshold
@@ -48,21 +46,40 @@ module "vault_k8s" {
   depends_on = [module.minikube]
 }
 
+module "vault_pki" {
+  source = "./modules/vault_pki"
+
+  ca_cert  = module.tls.ca_cert
+  priv_key = module.tls.ca_key
+}
+
 # Deploy External Secrets Manager
 module "esm" {
   count = var.minikube.enabled && var.minikube.external_secrets_manager ? 1 : 0
 
-  source = "./modules/external-secrets-manager"
+  source = "./modules/minikube_esm"
 
   ca_cert = module.tls.ca_cert
 
   depends_on = [module.vault_k8s]
 }
 
+# Deploy Vault Secrets Operator
 module "vso" {
   count = var.minikube.enabled && var.minikube.vault_secrets_operator ? 1 : 0
 
-  source = "./modules/vault-secrets-operator"
+  source = "./modules/minikube_vso"
+
+  ca_cert = module.tls.ca_cert
+
+  depends_on = [module.vault_k8s]
+}
+
+# Deploy Cert Manager
+module "cm" {
+  count = var.minikube.enabled && var.minikube.cert_manager ? 1 : 0
+
+  source = "./modules/minikube_cm"
 
   ca_cert = module.tls.ca_cert
 

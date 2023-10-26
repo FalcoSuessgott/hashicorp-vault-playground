@@ -28,4 +28,7 @@ minikube = {
 
   # enable vault secrets operator
   vault_secrets_operator = true
+
+  # enable cert manager
+  cert_manager = true
 }

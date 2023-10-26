@@ -17,6 +17,14 @@ defaults
     timeout check           10s
     maxconn                 3000
 
+frontend stats
+    mode http
+    bind *:8404
+    stats enable
+    stats uri /stats
+    stats refresh 10s
+    stats admin if LOCALHOST
+
 frontend vault
       mode tcp
       log global

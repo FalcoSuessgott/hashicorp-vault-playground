@@ -20,9 +20,11 @@ nav:
     - quickstart.md
   - Labs:
     - Vault: vault.md
+    - HAProxy: haproxy.md
     - Minikube: minikube.md
     - External Secrets Manager: esm.md
     - Vault Secrets Operator: vso.md
+    - Cert Manager: cm.md
 
 markdown_extensions:
   - pymdownx.superfences:

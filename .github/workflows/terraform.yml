@@ -18,3 +18,5 @@ jobs:
       - run: terraform fmt -check -recursive .
       - run: terraform validate -no-color .
       - run: terraform test
+        env:
+          TF_CLI_ARGS_test: "-compact-warnings"

@@ -2,6 +2,28 @@
 After a succesfull bootstrapping, you should be able to log into your local Vault HA Cluster by opening [https://127.0.0.1](https://127.0.0.1) in your browser.
 Since the CA File is not trusted by your System you the browser will mark the page is insecure, which is fine for now.
 
+## TLS
+An CA Certificate as well as a TLS Certificate for Vault has been created and configured under Vault.
+
+You can see how the connection without the CA-Cert is considered insecure:
+
+```bash
+$> curl https://127.0.0.1
+curl: (60) SSL certificate problem: self-signed certificate in certificate chain
+More details here: https://curl.se/docs/sslcerts.html
+
+curl failed to verify the legitimacy of the server and therefore could not
+establish a secure connection to it. To learn more about this situation and
+how to fix it, please visit the web page mentioned above.
+```
+
+But when you specifiy the CA-Cert Vaults Certificate can be verified:
+
+```bash
+$> curl https://127.0.0.1 --cacert vault/ca.crt
+<a href="/ui/">Temporary Redirect</a>.
+```
+
 ## CLI Authentication
 A file `.vault_token` containing Vaults Root-Token has been created. This allos you to login to the Vault Cluster
 Your shell can authenticate to the Vault Cluster using environment vars.
