@@ -10,6 +10,6 @@ Bootstrap a local Vault HA Cluster with many useful learning labs in under a min
 * [x] HAProxy including Vaults Health Check
 * [x] Vault Kubernetes Auth Method
 * [x] External Secrets Manager
-* [ ] Vault Secrets operator
+* [x] Vault Secrets operator
 * [ ] Certmanager
 * [ ] Prometheus & Grafana + Vault Metrics
