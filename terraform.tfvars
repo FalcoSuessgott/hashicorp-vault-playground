@@ -23,6 +23,9 @@ minikube = {
   # wether to enable minikube deployment
   enabled = true
 
-  # enable lab: external secrets manager
+  # enable external secrets manager
   external_secrets_manager = true
+
+  # enable vault secrets operator
+  vault_secrets_operator = true
 }

@@ -1,15 +1,7 @@
-// variables {
-//   # GH Action does not allow well-known ports
-//   haproxy = {
-//     port = 10200
-//   }
-// }
-
-# 1. only crete vault and tls resources
+# 1. only create vault and tls resources
 run "setup_vault" {
   plan_options {
     target = [
-      module.tls,
       module.vault
     ]
   }
@@ -20,7 +12,7 @@ run "vault_is_initialized" {
   command = plan
 
   module {
-    source = "./tests/test_utils"
+    source = "./tests/http_get"
   }
 
   variables {
@@ -57,7 +49,7 @@ run "kubeapi_is_available" {
   command = plan
 
   module {
-    source = "./tests/test_utils"
+    source = "./tests/http_get"
   }
 
   variables {
@@ -71,11 +63,55 @@ run "kubeapi_is_available" {
 }
 
 # 5. run esm
-# waiting for: https://github.com/hashicorp/terraform/pull/34118
-// run "esm" {
-//   plan_options {
-//     target = [
-//       module.esm
-//     ]
-//   }
-// }
+run "setup_esm" {
+  plan_options {
+    target = [
+      module.esm
+    ]
+  }
+}
+
+# 6. check if ESM Secret has been created
+run "esm_secret_is_created" {
+  command = plan
+
+  module {
+    source = "./tests/external_cmd"
+  }
+
+  variables {
+    command = "kubectl get secret -n esm esm-secret -o json | jq '.data | map_values(@base64d)'"
+  }
+
+  assert {
+    condition     = length(data.shell_script.command.output) == 2
+    error_message = "ESM Secret has not been created."
+  }
+}
+
+# 7. run vso
+run "setup_vso" {
+  plan_options {
+    target = [
+      module.vso
+    ]
+  }
+}
+
+# 8. check if VSO Secret has been created
+run "vso_secret_is_created" {
+  command = plan
+
+  module {
+    source = "./tests/external_cmd"
+  }
+
+  variables {
+    command = "kubectl get secret -n vso vso-secret -o json | jq '.data | map_values(@base64d)'"
+  }
+
+  assert {
+    condition     = length(data.shell_script.command.output) == 3 # vso always adds a _raw field to the secret
+    error_message = "VSO Secret has not been created."
+  }
+}

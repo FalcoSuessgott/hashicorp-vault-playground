@@ -19,8 +19,10 @@ nav:
     - home.md
     - quickstart.md
   - Labs:
-    - 1. Vault: vault.md
-    - 2. External Secrets Manager: esm.md
+    - Vault: vault.md
+    - Minikube: minikube.md
+    - External Secrets Manager: esm.md
+    - Vault Secrets Operator: vso.md
 
 markdown_extensions:
   - pymdownx.superfences:

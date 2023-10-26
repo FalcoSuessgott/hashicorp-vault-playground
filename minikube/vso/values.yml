@@ -1,0 +1,6 @@
+# https://github.com/hashicorp/vault-secrets-operator/blob/main/chart/values.yaml
+defaultVaultConnection:
+  enabled: true
+  address: https://host.minikube.internal
+  skipTLSVerify: false
+  caCertSecret: ca-cert

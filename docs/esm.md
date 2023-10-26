@@ -19,7 +19,7 @@ You then can bootstrap the cluster using `make bootstrap`
 The following resources will be created:
 
 1. The External Secrets Manager Helm Chart is going to be installed in the `esm` Namespace.
-2. A Kubernetes Auth Role `esm` bound to the External Secrets Manager Namespace & Service Account
+2. A Kubernetes Auth Role `esm` bound to the `esm` Namespace & Service Account
 3. KVv2 Secrets under `esm/secrets` containing 2 Example Secrets
 4. A policy (`esm`) that allows reading `/esm/secrets` Secrets
 5. A CRD `SecretStore` pointing to the Vault Server
@@ -37,7 +37,7 @@ esm     esm             1               2023-10-05 16:32:06.04091193 +0200 CEST 
 Additionally, a Vault Kubernetes Auth Role bounded to the Namespace and the ESM Service Account has been created:
 
 ```bash
-# https://localhost/ui/vault/access/minikube-cluster/item/role
+# https://localhost/ui/vault/access/minikube-cluster/item/role/esm
 $> vault read auth/minikube-cluster/role/esm
 Key                                 Value
 ---                                 -----
@@ -96,6 +96,29 @@ path "esm/*" {
 A CRD `SecretStore` has been created:
 
 ```bash
+$> cat minikube/esm/secret_store.yml
+apiVersion: external-secrets.io/v1beta1
+kind: SecretStore
+metadata:
+  name: secret-store
+  namespace: esm
+spec:
+  provider:
+    vault:
+      server: https://host.minikube.internal
+      caBundle: ""
+      auth:
+        kubernetes:
+          mountPath: minikube-cluster
+          role: esm
+          serviceAccountRef:
+            name: esm-external-secrets
+          secretRef:
+            name: esm-external-secrets-token-jgwbf
+            key: token
+  retrySettings:
+    maxRetries: 5
+    retryInterval: 10s
 $> kubectl get secretstores.external-secrets.io esm-secret-store -n esm
 NAME               AGE   STATUS   CAPABILITIES   READY
 esm-secret-store   10m   Valid    ReadWrite      True
@@ -104,6 +127,29 @@ esm-secret-store   10m   Valid    ReadWrite      True
 And a CRD `ExternalSecret`:
 
 ```bash
+$> cat minikube/esm/external_secret.yml
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: external-secret
+  namespace: esm
+spec:
+  secretStoreRef:
+    name: secret-store
+    kind: SecretStore
+  refreshInterval: "1h"
+  target:
+    name: esm-secret
+
+  data:
+    - secretKey: password
+      remoteRef:
+        key: esm/secrets
+        property: password
+    - secretKey: username
+      remoteRef:
+        key: esm/secrets
+        property: username
 $> kubectl get externalsecrets.external-secrets.io esm-external-secret -n esm
 NAME                  STORE              REFRESH INTERVAL   STATUS         READY
 esm-external-secret   esm-secret-store   1h                 SecretSynced   True

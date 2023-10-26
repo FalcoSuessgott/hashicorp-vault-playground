@@ -30,16 +30,16 @@ The following configurations are supported:
 ```bash
 vault = {
   # Number of Vault Nodes in Cluster
-  nodes              = 3
+  nodes = 3
 
   # docker network CIDR
-  ip_subnet          = "172.16.10.0/24"
+  ip_subnet = "172.16.10.0/24"
 
   # Vault Version
-  version            = "1.15"
+  version = "1.15"
 
   # baseport where the vault container are exposed to localhost
-  base_port          = 8000
+  base_port = 8000
 
   # Number of Keys & Shares during Initialization & Unsealing
   initialization = {
@@ -51,10 +51,13 @@ vault = {
 # Minikube Configuration
 minikube = {
   # wether to enable minikube deployment
-  enabled                  = true
+  enabled = true
 
-  # enable lab: external secrets manager
+  # enable external secrets manager
   external_secrets_manager = true
+
+  # enable vault secrets operator
+  vault_secrets_operator = true
 }
 ```
 

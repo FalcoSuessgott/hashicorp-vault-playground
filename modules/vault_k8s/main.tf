@@ -43,7 +43,7 @@ resource "kubernetes_cluster_role_binding" "role_binding" {
 
   subject {
     kind      = "ServiceAccount"
-    name      = kubernetes_secret.service_account_secret.metadata[0].name
+    name      = kubernetes_service_account.service_account.metadata[0].name
     namespace = "default"
   }
 }
