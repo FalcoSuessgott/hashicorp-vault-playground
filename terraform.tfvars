@@ -31,4 +31,7 @@ minikube = {
 
   # enable cert manager
   cert_manager = true
+
+  # enable vault agent injector
+  vault_agent_injector = true
 }

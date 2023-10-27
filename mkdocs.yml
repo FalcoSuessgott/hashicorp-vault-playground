@@ -24,6 +24,7 @@ nav:
     - Minikube: minikube.md
     - External Secrets Manager: esm.md
     - Vault Secrets Operator: vso.md
+    - Vault Agent Injector: vai.md
     - Cert Manager: cm.md
 
 markdown_extensions:
