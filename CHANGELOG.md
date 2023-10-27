@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.3.0](https://github.com/FalcoSuessgott/hashicorp-vault-playground/compare/v1.2.0...v1.3.0) (2023-10-27)
+
+
+### Features
+
+* **cert-manager:** add cert-manager ([#10](https://github.com/FalcoSuessgott/hashicorp-vault-playground/issues/10)) ([581b559](https://github.com/FalcoSuessgott/hashicorp-vault-playground/commit/581b5590d9bcdb4cb10bf7da550cf7b51fe78157))
+
 ## [1.2.0](https://github.com/FalcoSuessgott/hashicorp-vault-playground/compare/v1.1.1...v1.2.0) (2023-10-26)
 
 
