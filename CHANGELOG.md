@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.4.0](https://github.com/FalcoSuessgott/hashicorp-vault-playground/compare/v1.3.0...v1.4.0) (2023-10-27)
+
+
+### Features
+
+* **vai:** add vault agent injector ([#12](https://github.com/FalcoSuessgott/hashicorp-vault-playground/issues/12)) ([68e2ed3](https://github.com/FalcoSuessgott/hashicorp-vault-playground/commit/68e2ed3812451a9337a7bf5db2de89435d046af3))
+
 ## [1.3.0](https://github.com/FalcoSuessgott/hashicorp-vault-playground/compare/v1.2.0...v1.3.0) (2023-10-27)
 
 
