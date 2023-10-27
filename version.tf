@@ -62,7 +62,7 @@ provider "docker" {
 provider "vault" {
   address      = "https://127.0.0.1"
   token        = try(file(".vault_token"), "")
-  ca_cert_file = "./vault/ca.crt"
+  ca_cert_file = "./vault-tls/output/ca.crt"
 }
 
 provider "kubernetes" {

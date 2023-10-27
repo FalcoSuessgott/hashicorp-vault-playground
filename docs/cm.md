@@ -20,7 +20,7 @@ The following resources will be created:
 
 1. The Cert Manager Helm Chart is going to be installed in the `cm` Namespace.
 2. A Kubernetes Auth Role `cm` bound to the `cm` Namespace & Service Account
-3. PKI Engine under `cert-manager` is configured and role `nip-io` has been created 
+3. PKI Engine under `cert-manager` is configured and role `nip-io` has been created
 4. A policy (`cm`) that allows signing and issuing certificates for the `nip-io` PKI Role is created. (Read more about [nip.io](https://nip.io/))
 5. An Issuer `vault-issuer` is created for authenticating to Vault
 6. An Ingress resource `ingress` is created requesting a Certificate from Vaults PKI
@@ -30,16 +30,16 @@ The following resources will be created:
 The Cert Manager (CM) is going to be installed in the `cm` namespace using the [Helm Chart](https://github.com/cert-manager/cert-manager/tree/master/deploy/charts/cert-manager):
 
 ```bash
-$>  helm list -n cm 
+$>  helm list -n cm
 NAME    NAMESPACE       REVISION        UPDATED                                 STATUS          CHART                   APP VERSION
-cm      cm              1               2023-10-27 09:56:20.72302046 +0200 CEST deployed        cert-manager-v1.13.1    v1.13.1 
+cm      cm              1               2023-10-27 09:56:20.72302046 +0200 CEST deployed        cert-manager-v1.13.1    v1.13.1
 ```
 
 Additionally, a Vault Kubernetes Auth Role bounded to the Namespace and the ESM Service Account has been created:
 
 ```bash
 # https://localhost/ui/vault/access/minikube-cluster/item/role/cm
-$> vault read auth/minikube-cluster/role/cm 
+$> vault read auth/minikube-cluster/role/cm
 Key                                 Value
 ---                                 -----
 alias_name_source                   serviceaccount_uid
@@ -70,7 +70,7 @@ a PKI role `nip-io` has been created, allowing issuing of certs for `nip.io` sub
 
 ```bash
 # https://localhost/ui/vault/secrets/cert-manager-intermediate/pki/issuers
-$> vault read cert-manager-intermediate/roles/nip-io    
+$> vault read cert-manager-intermediate/roles/nip-io
 Key                                   Value
 ---                                   -----
 allow_any_name                        false
@@ -90,23 +90,23 @@ A corresponding policy `cm` that allows reading issuing and singing certs has be
 ```bash
 # https://localhost/ui/vault/policy/acl/cm
 $> vault policy read cm
-path "intermediate-ca" { 
-  capabilities = ["read", "list"] 
+path "cert-manager-intermediate" {
+  capabilities = ["read", "list"]
 }
 
-path "intermediate-ca/sign/nip-io" { 
-  capabilities = ["create", "update"] 
+path "cert-manager-intermediate/sign/nip-io" {
+  capabilities = ["create", "update"]
 }
 
-path "intermediate-ca/issue/nip-io" { 
-  capabilities = ["create"] 
+path "cert-manager-intermediate/issue/nip-io" {
+  capabilities = ["create"]
 }
 ```
 
 We deploy `kuard` as a Demo App aswell as a corresponding service:
 
 ```bash
-$>cat minikube/cm/kuard.yml                                                              
+$> cat k8s-cert-mananger/files/kuard.yml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -128,7 +128,7 @@ spec:
         name: kuard
         ports:
         - containerPort: 8080
-$> cat minikube/cm/kuard_svc.yml 
+$> cat k8s-cert-mananger/files/kuard_svc.yml
 ---
 apiVersion: v1
 kind: Service
@@ -147,7 +147,7 @@ spec:
 A Issuer has been created authenticating to Vault and the PKI Engine:
 
 ```bash
-$> cat minikube/cm/issuer.yml   
+$> cat k8s-cert-mananger/output/issuer.yml
 apiVersion: cert-manager.io/v1
 kind: Issuer
 metadata:
@@ -169,7 +169,7 @@ spec:
 An Ingress has been created, pointing to our Demo App and requesting a Certificate:
 
 ```bash
-$> cat minikube/cm/ingress.yml 
+$> cat k8s-cert-mananger/output/ingress.yml
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -198,18 +198,18 @@ spec:
 The certificate was requested, signed and issued successfully and is stored as a kubernetes secret:
 
 ```bash
-$> kubectl describe secret kuard-cert -n cm   
+$> kubectl describe secret kuard-cert -n cm
 Name:         kuard-cert
 Namespace:    cm
 Labels:       controller.cert-manager.io/fao=true
 Annotations:  cert-manager.io/alt-names: 192.168.49.2.nip.io
               cert-manager.io/certificate-name: kuard-cert
-              cert-manager.io/common-name: 
-              cert-manager.io/ip-sans: 
+              cert-manager.io/common-name:
+              cert-manager.io/ip-sans:
               cert-manager.io/issuer-group: cert-manager.io
               cert-manager.io/issuer-kind: Issuer
               cert-manager.io/issuer-name: vault-issuer
-              cert-manager.io/uri-sans: 
+              cert-manager.io/uri-sans:
 
 Type:  kubernetes.io/tls
 

@@ -1,0 +1,11 @@
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultAuth
+metadata:
+  name: vso-vault-auth
+  namespace: vso
+spec:
+  method: kubernetes
+  mount: minikube-cluster
+  kubernetes:
+    role: vso
+    serviceAccount: default

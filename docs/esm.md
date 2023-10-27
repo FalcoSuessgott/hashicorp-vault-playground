@@ -96,7 +96,7 @@ path "esm/*" {
 A CRD `SecretStore` has been created:
 
 ```bash
-$> cat minikube/esm/secret_store.yml
+$> cat k8s-external-secrets-manager/output/secret_store.yml
 apiVersion: external-secrets.io/v1beta1
 kind: SecretStore
 metadata:
@@ -119,15 +119,12 @@ spec:
   retrySettings:
     maxRetries: 5
     retryInterval: 10s
-$> kubectl get secretstores.external-secrets.io esm-secret-store -n esm
-NAME               AGE   STATUS   CAPABILITIES   READY
-esm-secret-store   10m   Valid    ReadWrite      True
 ```
 
-And a CRD `ExternalSecret`:
+And a CRD `ExternalSecret` has been created:
 
 ```bash
-$> cat minikube/esm/external_secret.yml
+$> cat k8s-external-secrets-manager/output/external_secret.yml
 apiVersion: external-secrets.io/v1beta1
 kind: ExternalSecret
 metadata:
@@ -150,9 +147,6 @@ spec:
       remoteRef:
         key: esm/secrets
         property: username
-$> kubectl get externalsecrets.external-secrets.io esm-external-secret -n esm
-NAME                  STORE              REFRESH INTERVAL   STATUS         READY
-esm-external-secret   esm-secret-store   1h                 SecretSynced   True
 ```
 
 Finally, a Kubernetes Secret containing the KVv2 Secrets from `/esm/secrets/` has been created:
