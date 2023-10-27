@@ -2,9 +2,5 @@
 **/.terraform.lock.hcl
 **/terraform.tfstate
 **/terraform.tfstate.backup
-**/*.crt
-**/*.key
-**/prometheus-token
 **/.vault_token
-**/external_secret.yml
-**/secret_store.yml
+**/output/*

@@ -5,4 +5,3 @@ HAProxy does not terminate the TLS Connection instead of it passes through the c
 
 ## HAProxy Stats & Metrics
 You can explore HAProxy Metrics under [http://localhost:8404/stats](http://localhost:8404/stats) and see how the metrics change with every request to Vault.
-

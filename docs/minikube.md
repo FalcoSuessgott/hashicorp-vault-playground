@@ -28,7 +28,6 @@ kubernetes-dashboard   kubernetes-dashboard-55c4cbbc7c-7rv8w                    
 As well as the Kubernetes Dashboard:
 
 ```bash
-$> minikube profile vault-playground
 $> minikube dashboard # opens Dashbord in browser
 $> minikube dashboard --url # print Dashboard URL
 ```

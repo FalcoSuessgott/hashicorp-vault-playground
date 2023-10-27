@@ -30,3 +30,12 @@ cleanup: ## cleanup
 
 	rm terraform.tfstate || true
 	rm terraform.tfstate.backup || true
+
+.PHONY: new-lab
+new-lab:  ## creates a new lab directory
+	mkdir -p $(name)/terraform
+	mkdir -p $(name)/output
+	touch $(name)/output/.gitkeep
+	mkdir -p $(name)/templates
+	mkdir -p $(name)/files
+	echo "$(name)" > docs/$(name).md

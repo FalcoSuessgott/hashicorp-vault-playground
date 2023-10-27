@@ -1,6 +1,6 @@
 # Create CA Certificate and Sign Vault Server Certificate + Key
 module "tls" {
-  source = "./modules/tls"
+  source = "./vault-tls/terraform"
 
   ca_cn   = "HashiCorp Vault Playground CA"
   cert_cn = "Vault"
@@ -14,7 +14,7 @@ module "tls" {
 
 # Create Vault Raft HA Cluster
 module "vault" {
-  source = "./modules/vault"
+  source = "./vault-server/terraform"
 
   vault_nodes   = 3
   ip_subnet     = var.vault.ip_subnet
@@ -32,7 +32,7 @@ module "vault" {
 module "minikube" {
   count = var.minikube.enabled ? 1 : 0
 
-  source = "./modules/minikube"
+  source = "./k8s-minikube/terraform"
 
   depends_on = [module.vault]
 }
@@ -41,25 +41,25 @@ module "minikube" {
 module "vault_k8s" {
   count = var.minikube.enabled ? 1 : 0
 
-  source = "./modules/vault_k8s"
+  source = "./vault-k8s/terraform"
 
   depends_on = [module.minikube]
 }
 
 module "vault_pki" {
-  source = "./modules/vault_pki"
+  source = "./vault-pki/terraform"
 
-  ca_cert  = module.tls.ca_cert
-  priv_key = module.tls.ca_key
+  ca_cert  = module.tls.ca.cert
+  priv_key = module.tls.ca.key
 }
 
 # Deploy External Secrets Manager
 module "esm" {
   count = var.minikube.enabled && var.minikube.external_secrets_manager ? 1 : 0
 
-  source = "./modules/minikube_esm"
+  source = "./k8s-external-secrets-operator/terraform"
 
-  ca_cert = module.tls.ca_cert
+  ca_cert = module.tls.ca.cert
 
   depends_on = [module.vault_k8s]
 }
@@ -68,9 +68,9 @@ module "esm" {
 module "vso" {
   count = var.minikube.enabled && var.minikube.vault_secrets_operator ? 1 : 0
 
-  source = "./modules/minikube_vso"
+  source = "./k8s-vault-secrets-operator/terraform"
 
-  ca_cert = module.tls.ca_cert
+  ca_cert = module.tls.ca.cert
 
   depends_on = [module.vault_k8s]
 }
@@ -79,9 +79,10 @@ module "vso" {
 module "cm" {
   count = var.minikube.enabled && var.minikube.cert_manager ? 1 : 0
 
-  source = "./modules/minikube_cm"
+  source = "./k8s-cert-manager/terraform"
 
-  ca_cert = module.tls.ca_cert
+  ca_cert     = module.tls.ca.cert
+  minikube_ip = module.minikube[0].minikube_ip
 
   depends_on = [module.vault_k8s]
 }
