@@ -16,7 +16,9 @@ run "vault_is_initialized" {
   }
 
   variables {
-    url = "https://127.0.0.1/v1/sys/seal-status"
+    ca_cert  = run.setup_vault.ca_cert
+    insecure = null
+    url      = "https://127.0.0.1/v1/sys/seal-status"
   }
 
   assert {
@@ -113,5 +115,35 @@ run "vso_secret_is_created" {
   assert {
     condition     = length(data.shell_script.command.output) == 3 # vso always adds a _raw field to the secret
     error_message = "VSO Secret has not been created."
+  }
+}
+
+# 9. run cm
+run "setup_cm" {
+  plan_options {
+    target = [
+      module.vault_pki,
+      module.cm
+    ]
+  }
+}
+
+# 10. check kuard demo app is tls secured
+run "kuard_verifies_using_ca_cert" {
+  command = plan
+
+  module {
+    source = "./tests/http_get"
+  }
+
+  variables {
+    ca_cert  = run.setup_vault.ca_cert
+    url      = "https://${run.setup_minikube.minikube_ip}.nip.io"
+    insecure = null
+  }
+
+  assert {
+    condition     = data.http.request.status_code == 200
+    error_message = "Kuard Demo App is cannot be verified using the CA Cert (Want: 200, Got:${data.http.request.status_code})."
   }
 }

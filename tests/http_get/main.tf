@@ -13,11 +13,22 @@ variable "url" {
   type = string
 }
 
+variable "ca_cert" {
+  type    = string
+  default = null
+}
+
+variable "insecure" {
+  type    = bool
+  default = true
+}
+
 # tflint-ignore: terraform_unused_declarations
 data "http" "request" {
   url = var.url
 
-  insecure = true
+  insecure    = var.insecure
+  ca_cert_pem = var.ca_cert
 
   request_headers = {
     Accept = "application/json"

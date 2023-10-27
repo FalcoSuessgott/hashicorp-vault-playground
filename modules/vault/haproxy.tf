@@ -16,6 +16,12 @@ resource "docker_container" "haproxy" {
     ip       = "0.0.0.0"
   }
 
+  ports {
+    internal = 8404
+    external = 8404
+    ip       = "0.0.0.0"
+  }
+
   volumes {
     host_path      = abspath(local_file.haproxy.filename)
     container_path = "/usr/local/etc/haproxy/haproxy.cfg"

@@ -34,7 +34,7 @@ NAME    NAMESPACE       REVISION        UPDATED                                 
 vso     vso             1               2023-10-26 09:46:49.280228437 +0200 CEST        deployed        vault-secrets-operator-0.3.4    0.3.4
 ```
 
-Additionally, a Vault Kubernetes Auth Role bounded to the Namespace and the ESM Service Account has been created:
+Additionally, a Vault Kubernetes Auth Role bounded to the Namespace and the `default` Service Account has been created:
 
 ```bash
 # https://localhost/ui/vault/access/minikube-cluster/item/role/show/vso

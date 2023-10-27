@@ -6,3 +6,7 @@ output "kubeconfig" {
     cluster_ca_certificate = minikube_cluster.docker.cluster_ca_certificate
   }
 }
+
+output "minikube_ip" {
+  value = split(":", regex("^(?:(?P<scheme>[^:/?#]+):)?(?://(?P<authority>[^/?#]*))?", minikube_cluster.docker.host).authority)[0]
+}
