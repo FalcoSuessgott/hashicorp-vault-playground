@@ -35,6 +35,7 @@ $> cat .envrc
 export VAULT_ADDR="https://127.0.0.1"
 export VAULT_CAPATH="./vault-tls/output/ca.crt"
 export VAULT_TOKEN="$(cat .vault_token)"
+export MINIKUBE_PROFILE="vault-playground"
 
 $> source .envrc
 

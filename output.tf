@@ -1,6 +1,5 @@
 output "ca_cert" {
-  sensitive = true
-  value     = module.tls.ca.cert
+  value = module.tls.ca.cert
 }
 
 output "minikube_ip" {

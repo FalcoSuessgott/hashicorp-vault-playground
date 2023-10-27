@@ -58,6 +58,8 @@ resource "local_file" "vault_issuer" {
 
 resource "kubectl_manifest" "vault_issuer" {
   yaml_body = local_file.vault_issuer.content
+
+  depends_on = [helm_release.cm]
 }
 
 resource "local_file" "ingress" {
