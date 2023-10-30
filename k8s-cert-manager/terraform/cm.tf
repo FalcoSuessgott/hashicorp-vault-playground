@@ -61,16 +61,3 @@ resource "kubectl_manifest" "vault_issuer" {
 
   depends_on = [helm_release.cm]
 }
-
-resource "local_file" "ingress" {
-  filename = "${path.module}/../output/ingress.yml"
-  content = templatefile("${path.module}/../templates/ingress.yml", {
-    minikube_ip = var.minikube_ip
-  })
-}
-
-resource "kubectl_manifest" "ingress" {
-  yaml_body = local_file.ingress.content
-
-  depends_on = [helm_release.cm]
-}

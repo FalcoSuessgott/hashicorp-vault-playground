@@ -6,8 +6,7 @@ resource "kubernetes_service_account" "service_account" {
   automount_service_account_token = false
 
   metadata {
-    name      = var.service_account_name
-    namespace = var.namespace
+    name = var.service_account_name
   }
 
   secret {
@@ -17,12 +16,11 @@ resource "kubernetes_service_account" "service_account" {
 
 resource "kubernetes_secret" "service_account_secret" {
   metadata {
-    name      = local.secret_name
-    namespace = var.namespace
+    name = local.secret_name
 
     annotations = {
       "kubernetes.io/service-account.name"      = kubernetes_service_account.service_account.metadata[0].name
-      "kubernetes.io/service-account.namespace" = var.namespace
+      "kubernetes.io/service-account.namespace" = "default"
     }
   }
 

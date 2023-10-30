@@ -169,17 +169,17 @@ spec:
 An Ingress has been created, pointing to our Demo App and requesting a Certificate:
 
 ```bash
-$> cat k8s-cert-mananger/output/ingress.yml
+$> cat k8s-cert-mananger/output/kuard_ingress.yml
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   annotations:
-    cert-manager.io/issuer: vault-issuer
+    cert-manager.io/cluster-issuer: vault-issuer
   name: ingress
   namespace: cm
 spec:
   rules:
-  - host: 192.168.49.2.nip.io
+  - host: kuard.192.168.49.2.nip.io
     http:
       paths:
       - pathType: Prefix
@@ -191,8 +191,9 @@ spec:
               number: 80
   tls:
   - hosts:
-    - 192.168.49.2.nip.io
+    - kuard.192.168.49.2.nip.io
     secretName: kuard-cert
+
 ```
 
 The certificate was requested, signed and issued successfully and is stored as a kubernetes secret:
@@ -220,18 +221,32 @@ ca.crt:   1107 bytes
 tls.crt:  2392 bytes
 ```
 
+You can see the certificates in Vault:
+
+```bash
+# https://localhost/ui/vault/secrets/cert-manager-intermediate/pki/certificates
+$> vault list - cert-manager-intermediate/certs
+Keys
+----
+04:4b:a0:0d:b6:6e:45:04:1d:1a:30:4d:34:53:a6:e1:a3:31:59:8d
+0e:41:80:d7:36:71:e0:b7:8c:b8:88:54:3d:28:ab:0b:e8:cd:6a:59
+10:ec:5d:1a:9a:90:ac:af:14:57:85:05:35:cb:03:7d:ea:ce:ec:12
+5e:56:8e:52:f9:07:ea:d8:58:06:cb:bd:fa:af:8e:82:fc:82:95:82
+6f:48:4b:e8:29:5b:2a:4b:e9:cf:d5:68:5e:1a:c3:ce:81:9d:af:e0
+79:44:da:69:bf:21:e6:8d:27:fa:75:91:15:5f:11:20:19:23:8e:86
+```
 You can see that the connection to `kuard` is now secured and verified using the CA certificate:
 
 ```bash
 $> minikube profile vault-playground
-$> curl "https://$(minikube ip).nip.io"
+$> curl "https://kuard.$(minikube ip).nip.io"
 curl: (60) SSL certificate problem: unable to get local issuer certificate
 More details here: https://curl.se/docs/sslcerts.html
 
 curl failed to verify the legitimacy of the server and therefore could not
 establish a secure connection to it. To learn more about this situation and
 how to fix it, please visit the web page mentioned above.
-$> curl "https://$(minikube ip).nip.io" --cacert vault/ca.crt
+$> curl "https://kuard.$(minikube ip).nip.io" --cacert vault/ca.crt
 <!doctype html>
 ...
 ```

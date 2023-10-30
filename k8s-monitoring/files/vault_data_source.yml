@@ -1,0 +1,12 @@
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDatasource
+metadata:
+  name: grafanadatasource-sample
+  namespace: monitoring
+spec:
+  datasource:
+    name: vault
+    type: prometheus
+    access: server
+    basicAuth: true
+    url: http://monitoring.kube-prometheus-prometheus.svc.prometheus-service:9090

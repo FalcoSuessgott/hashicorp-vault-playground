@@ -1,0 +1,50 @@
+# https://github.com/prometheus-community/helm-charts/blob/main/charts/kube-prometheus-stack/values.yaml
+grafana:
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    annotations:
+      cert-manager.io/cluster-issuer: vault-issuer
+    hosts:
+      - grafana.${minikube_ip}.nip.io
+    paths:
+      - /
+    tls:
+      - secretName: grafana-cert
+        hosts:
+          - grafana.${minikube_ip}.nip.io
+  # dashboards:
+  #   default:
+  #     nginx-ingress:
+  #       url: https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/grafana/dashboards/nginx.json
+
+prometheus:
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    annotations:
+      cert-manager.io/cluster-issuer: vault-issuer
+    hosts:
+      - prometheus.${minikube_ip}.nip.io
+    paths:
+      - /
+    tls:
+      - secretName: prometheus-cert
+        hosts:
+          - prometheus.${minikube_ip}.nip.io
+
+# Disable Etcd metrics
+kubeEtcd:
+  enabled: false
+
+# Disable Controller metrics
+kubeControllerManager:
+  enabled: false
+
+# Disable Scheduler metrics
+kubeScheduler:
+  enabled: false
+
+# Disable alertmanager
+alertmanager:
+  enabled: false

@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: vault-issuer
+  name: dasboard
+  namespace: kubernetes-dashboard
+spec:
+  rules:
+  - host: dashboard.${minikube_ip}.nip.io
+    http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: kubernetes-dashboard
+            port:
+              number: 80
+  tls:
+  - hosts:
+    - dashboard.${minikube_ip}.nip.io
+    secretName: dashboard-cert

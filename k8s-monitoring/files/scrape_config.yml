@@ -1,0 +1,24 @@
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: ScrapeConfig
+metadata:
+  name: vault
+  namespace: monitoring
+spec:
+  metricsPath: v1/sys/metrics
+  params:
+    format: ['prometheus']
+  scheme: HTTPS
+  tlsConfig:
+    ca:
+      secret:
+        key: ca.crt
+        name: ca-cert
+  authorization:
+    credentials:
+      key: token
+      name: token
+  staticConfigs:
+    - labels:
+        job: prometheus
+      targets:
+        - https://host.minikube.internal
