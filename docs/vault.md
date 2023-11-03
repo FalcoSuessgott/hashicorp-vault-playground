@@ -20,7 +20,7 @@ how to fix it, please visit the web page mentioned above.
 But when you specifiy the CA-Cert Vaults Certificate can be verified:
 
 ```bash
-$> curl https://127.0.0.1 --cacert vault/ca.crt
+$> curl https://127.0.0.1 --cacert $VAULT_CAPATH
 <a href="/ui/">Temporary Redirect</a>.
 ```
 
@@ -28,15 +28,9 @@ $> curl https://127.0.0.1 --cacert vault/ca.crt
 A file `.vault_token` containing Vaults Root-Token has been created. This allos you to login to the Vault Cluster
 Your shell can authenticate to the Vault Cluster using environment vars.
 
-Simply source `.envrc` and run `vault status`
+Simply source [`.envrc`](https://github.com/FalcoSuessgott/hashicorp-vault-playground/blob/main/.envrc) and run `vault status`
 
 ```bash
-$> cat .envrc
-export VAULT_ADDR="https://127.0.0.1"
-export VAULT_CAPATH="./vault-tls/output/ca.crt"
-export VAULT_TOKEN="$(cat .vault_token)"
-export MINIKUBE_PROFILE="vault-playground"
-
 $> source .envrc
 
 $> vault status
