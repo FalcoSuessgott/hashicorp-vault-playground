@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+### [1.4.1](https://github.com/FalcoSuessgott/hashicorp-vault-playground/compare/v1.4.0...v1.4.1) (2023-11-03)
+
+
+### Bug Fixes
+
+* **envrc:** use full path to vault's ca ([#16](https://github.com/FalcoSuessgott/hashicorp-vault-playground/issues/16)) ([f2c7419](https://github.com/FalcoSuessgott/hashicorp-vault-playground/commit/f2c74193bdce20548fc2194b558878bf77225027))
+
 ## [1.4.0](https://github.com/FalcoSuessgott/hashicorp-vault-playground/compare/v1.3.0...v1.4.0) (2023-10-27)
 
 
