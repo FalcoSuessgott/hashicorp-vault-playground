@@ -1,4 +1,4 @@
-resource "docker_network" "network" {
+resource "docker_network" "vault" {
   name     = "vault"
   internal = false
 

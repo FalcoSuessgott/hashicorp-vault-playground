@@ -28,6 +28,14 @@ module "vault" {
   depends_on = [module.tls]
 }
 
+module "database" {
+  count = var.databases.enabled ? 1 : 0
+
+  source = "./vault-database/terraform"
+
+  depends_on = [module.vault]
+}
+
 # Spin up a K8s Cluster
 module "minikube" {
   count = var.minikube.enabled ? 1 : 0

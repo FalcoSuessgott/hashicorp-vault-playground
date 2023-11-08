@@ -18,6 +18,14 @@ vault = {
   }
 }
 
+# Dyanmic DB Credentials
+databases = {
+  enabled = true
+
+  # enable mysql db
+  mysql = true
+}
+
 # Minikube Configuration
 minikube = {
   # wether to enable minikube deployment

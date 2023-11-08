@@ -118,7 +118,7 @@ spec:
         vault.hashicorp.com/agent-inject-secret-secrets.txt: 'vai/data/secrets'
         vault.hashicorp.com/agent-inject-template-secrets.txt: |
           {{- with secret "vai/data/secrets" -}}
-          { 
+          {
             "username": "{{ .Data.data.username }}",
             "password": "{{ .Data.data.password }}"
           }

@@ -59,7 +59,7 @@ resource "docker_container" "vault" {
   }
 
   networks_advanced {
-    name         = docker_network.network.name
+    name         = docker_network.vault.name
     ipv4_address = each.value.ip
   }
 
