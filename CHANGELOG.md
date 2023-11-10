@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.5.0](https://github.com/FalcoSuessgott/hashicorp-vault-playground/compare/v1.4.1...v1.5.0) (2023-11-10)
+
+
+### Features
+
+* **db:** add dynamic db credential mysql lab ([#18](https://github.com/FalcoSuessgott/hashicorp-vault-playground/issues/18)) ([38e4ef5](https://github.com/FalcoSuessgott/hashicorp-vault-playground/commit/38e4ef58d6cefc2d9929b36cb60341904c90835a))
+
 ### [1.4.1](https://github.com/FalcoSuessgott/hashicorp-vault-playground/compare/v1.4.0...v1.4.1) (2023-11-03)
 
 
