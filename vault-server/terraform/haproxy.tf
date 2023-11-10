@@ -29,7 +29,7 @@ resource "docker_container" "haproxy" {
   }
 
   networks_advanced {
-    name = docker_network.network.name
+    name = docker_network.vault.name
   }
 
   lifecycle {

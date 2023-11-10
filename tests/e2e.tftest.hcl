@@ -1,4 +1,4 @@
-# 1. only create vault and tls resources
+# only create vault and tls resources
 run "setup_vault" {
   plan_options {
     target = [
@@ -7,12 +7,12 @@ run "setup_vault" {
   }
 }
 
-# 2. execute helper module to check http code of Vault URL
+# execute helper module to check http code of Vault URL
 run "vault_is_initialized" {
   command = plan
 
   module {
-    source = "./tests/http_get"
+    source = "./tests/http"
   }
 
   variables {
@@ -37,7 +37,39 @@ run "vault_is_initialized" {
   }
 }
 
-# 3. create only minikube
+# create database
+run "setup_database" {
+  plan_options {
+    target = [
+      module.database
+    ]
+  }
+}
+
+# check kuard demo app is tls secured
+run "mysql_user_is_created" {
+  command = plan
+
+  module {
+    source = "./tests/http"
+  }
+
+  variables {
+    ca_cert  = run.setup_vault.ca_cert
+    insecure = null
+    header = {
+      "X-Vault-Token" = run.setup_vault.root_token
+    }
+    url = "https://127.0.0.1/v1/databases/creds/mysql"
+  }
+
+  assert {
+    condition     = data.http.request.status_code == 200
+    error_message = "Error while generating MySQL Credentials (Want: 200, Got:${data.http.request.status_code})."
+  }
+}
+
+# create only minikube
 run "setup_minikube" {
   plan_options {
     target = [
@@ -46,12 +78,12 @@ run "setup_minikube" {
   }
 }
 
-# 4. check if KubeAPI URL is available
+# check if KubeAPI URL is available
 run "kubeapi_is_available" {
   command = plan
 
   module {
-    source = "./tests/http_get"
+    source = "./tests/http"
   }
 
   variables {
@@ -64,7 +96,7 @@ run "kubeapi_is_available" {
   }
 }
 
-# 5. run esm
+# run esm
 run "setup_esm" {
   plan_options {
     target = [
@@ -73,7 +105,7 @@ run "setup_esm" {
   }
 }
 
-# 6. check if ESM Secret has been created
+# check if ESM Secret has been created
 run "esm_secret_is_created" {
   command = plan
 
@@ -91,7 +123,7 @@ run "esm_secret_is_created" {
   }
 }
 
-# 7. run vso
+# run vso
 run "setup_vso" {
   plan_options {
     target = [
@@ -100,7 +132,7 @@ run "setup_vso" {
   }
 }
 
-# 8. check if VSO Secret has been created
+# check if VSO Secret has been created
 run "vso_secret_is_created" {
   command = plan
 
@@ -128,12 +160,12 @@ run "setup_cm" {
   }
 }
 
-# 10. check kuard demo app is tls secured
+# check kuard demo app is tls secured
 run "kuard_verifies_using_ca_cert" {
   command = plan
 
   module {
-    source = "./tests/http_get"
+    source = "./tests/http"
   }
 
   variables {
@@ -148,7 +180,7 @@ run "kuard_verifies_using_ca_cert" {
   }
 }
 
-# 11. setup vault agent injector
+# setup vault agent injector
 run "setup_vai" {
   plan_options {
     target = [
@@ -157,7 +189,7 @@ run "setup_vai" {
   }
 }
 
-# 12. check if vai injected secrets into pod
+# check if vai injected secrets into pod
 run "vai_secret_is_injected" {
   command = plan
 

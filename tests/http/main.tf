@@ -23,16 +23,25 @@ variable "insecure" {
   default = true
 }
 
+variable "method" {
+  type    = string
+  default = "GET"
+}
+
+variable "header" {
+  type    = map(string)
+  default = null
+}
+
 # tflint-ignore: terraform_unused_declarations
 data "http" "request" {
-  url = var.url
+  url    = var.url
+  method = var.method
 
   insecure    = var.insecure
   ca_cert_pem = var.ca_cert
 
-  request_headers = {
-    Accept = "application/json"
-  }
+  request_headers = merge(var.header, { Accept = "application/json" })
 
   retry {
     attempts = 3

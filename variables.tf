@@ -14,6 +14,13 @@ variable "vault" {
   })
 }
 
+variable "databases" {
+  type = object({
+    enabled = optional(bool, true)
+    mysql   = optional(bool, true)
+  })
+}
+
 variable "minikube" {
   type = object({
     enabled                  = optional(bool, true)

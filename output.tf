@@ -5,3 +5,11 @@ output "ca_cert" {
 output "minikube_ip" {
   value = module.minikube[0].minikube_ip
 }
+
+output "root_token" {
+  value = module.vault.root_token
+}
+
+output "unseal_keys" {
+  value = module.vault.unseal_keys
+}

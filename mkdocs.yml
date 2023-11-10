@@ -26,6 +26,7 @@ nav:
     - Vault Secrets Operator: vso.md
     - Vault Agent Injector: vai.md
     - Cert Manager: cm.md
+    - Dynamic Database Credentials: databases.md
 
 markdown_extensions:
   - pymdownx.superfences:
