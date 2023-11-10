@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.6.0](https://github.com/FalcoSuessgott/hashicorp-vault-playground/compare/v1.5.0...v1.6.0) (2023-11-10)
+
+
+### Features
+
+* **sealing:** add seal lab ([5aef0b5](https://github.com/FalcoSuessgott/hashicorp-vault-playground/commit/5aef0b5967a06cf7a3303e81a571562437b11619))
+
 ## [1.5.0](https://github.com/FalcoSuessgott/hashicorp-vault-playground/compare/v1.4.1...v1.5.0) (2023-11-10)
 
 
