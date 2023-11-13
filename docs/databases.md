@@ -18,7 +18,7 @@ The following resources will be created:
 
 1. A MySQL Container will be deployed
 2. The Database secret engine will be enabled
-3. The A MySQL Database Connection will be created
+3. A MySQL Database Connection will be created
 4. A Database Role pointing to that MySQL DB will be created
 
 ## Walkthrough
@@ -109,7 +109,7 @@ Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
 mysql>
 ```
 
-Roate root credentials:
+Rotate root credentials:
 
 ```bash
 # https://localhost/ui/vault/secrets/databases/show/mysql
