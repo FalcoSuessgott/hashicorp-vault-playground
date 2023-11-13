@@ -1,27 +1,55 @@
 # Vault
+
+![img](assets/raft.png)
+> https://developer.hashicorp.com/vault/tutorials/day-one-raft/raft-reference-architecture
+
 After a succesfull bootstrapping, you should be able to log into your local Vault HA Cluster by opening [https://127.0.0.1](https://127.0.0.1) in your browser.
 Since the CA File is not trusted by your System you the browser will mark the page is insecure, which is fine for now.
 
-## TLS
-An CA Certificate as well as a TLS Certificate for Vault has been created and configured under Vault.
-
-You can see how the connection without the CA-Cert is considered insecure:
+## Configuration
+See the final Vault Configuration:
 
 ```bash
-$> curl https://127.0.0.1
-curl: (60) SSL certificate problem: self-signed certificate in certificate chain
-More details here: https://curl.se/docs/sslcerts.html
+$> docker exec -it vault-01 sh -c "cat /vault/config/vault.hcl"
+ui = true
+disable_mlock = true
+api_addr = "https://{{ GetPrivateIP }}:8200"
+cluster_addr = "https://{{ GetPrivateIP }}:8201"
 
-curl failed to verify the legitimacy of the server and therefore could not
-establish a secure connection to it. To learn more about this situation and
-how to fix it, please visit the web page mentioned above.
-```
+listener "tcp" {
+  address="0.0.0.0:8200"
+  tls_cert_file="/opt/tls/vault.crt"
+  tls_key_file="/opt/tls/vault.key"
+}
 
-But when you specifiy the CA-Cert Vaults Certificate can be verified:
+storage "raft" {
+  path = "/vault/file/"
 
-```bash
-$> curl https://127.0.0.1 --cacert $VAULT_CAPATH
-<a href="/ui/">Temporary Redirect</a>.
+  retry_join {
+    leader_api_addr = "https://vault-01:8200"
+    leader_ca_cert_file = "/opt/tls/ca.crt"
+    leader_client_cert_file = "/opt/tls/vault.crt"
+    leader_client_key_file = "/opt/tls/vault.key"
+  }
+  retry_join {
+    leader_api_addr = "https://vault-02:8200"
+    leader_ca_cert_file = "/opt/tls/ca.crt"
+    leader_client_cert_file = "/opt/tls/vault.crt"
+    leader_client_key_file = "/opt/tls/vault.key"
+  }
+  retry_join {
+    leader_api_addr = "https://vault-03:8200"
+    leader_ca_cert_file = "/opt/tls/ca.crt"
+    leader_client_cert_file = "/opt/tls/vault.crt"
+    leader_client_key_file = "/opt/tls/vault.key"
+  }
+
+}
+
+telemetry {
+  disable_hostname = true
+  prometheus_retention_time = "12h"
+}
 ```
 
 ## CLI Authentication
@@ -63,53 +91,4 @@ Node        Address              State       Voter
 vault-01    172.16.10.10:8201    leader      true
 vault-03    172.16.10.12:8201    follower    true
 vault-02    172.16.10.11:8201    follower    true
-```
-
-## Seal
-You can seal the vault cluster:
-
-```bash
-# https://localhost/ui/vault/settings/seal
-$> vault operator seal
-Success! Vault is sealed.
-$> vault status
-Key                Value
----                -----
-Seal Type          shamir
-Initialized        true
-Sealed             true # sealed
-Total Shares       5
-Threshold          3
-Unseal Progress    0/3
-Unseal Nonce       n/a
-Version            1.15.0
-Build Date         2023-09-22T16:53:10Z
-Storage Type       raft
-HA Enabled         true
-```
-
-## Unseal
-Unseal the Vault using unseal keys:
-```bash
-# avoid LB since there is no leader currently
-$> for v in $(tf output -json unseal_keys | jq -r '.[]'); do VAULT_ADDR="https://127.0.0.1:8001" vault operator unseal $v; done
-$> vault status
-Key                     Value
----                     -----
-Seal Type               shamir
-Initialized             true
-Sealed                  false
-Total Shares            5
-Threshold               3
-Version                 1.15.0
-Build Date              2023-09-22T16:53:10Z
-Storage Type            raft
-Cluster Name            vault-cluster-72d01233
-Cluster ID              2fe3e6bc-a386-a5d9-c151-da34c91e91c9
-HA Enabled              true
-HA Cluster              https://172.16.10.12:8201
-HA Mode                 active
-Active Since            2023-11-10T14:15:08.957733343Z
-Raft Committed Index    110
-Raft Applied Index      110
 ```

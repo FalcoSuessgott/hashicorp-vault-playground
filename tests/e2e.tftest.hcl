@@ -73,7 +73,7 @@ run "mysql_user_is_created" {
 run "setup_minikube" {
   plan_options {
     target = [
-      module.minikube
+      module.kubernetes
     ]
   }
 }

@@ -19,14 +19,21 @@ nav:
     - home.md
     - quickstart.md
   - Labs:
-    - Vault: vault.md
-    - HAProxy: haproxy.md
-    - Minikube: minikube.md
-    - External Secrets Manager: esm.md
-    - Vault Secrets Operator: vso.md
-    - Vault Agent Injector: vai.md
-    - Cert Manager: cm.md
-    - Dynamic Database Credentials: databases.md
+    - Vault:
+      - Vault HA Cluster: vault.md
+      - TLS: tls.md
+      - Generate Root: generate-root.md
+      - Rekeying: rekey.md
+      - Seal & Unsealing: seal.md
+      - HAProxy: haproxy.md
+    - Kubernetes:
+      - Minikube: minikube.md
+      - External Secrets Manager: esm.md
+      - Vault Secrets Operator: vso.md
+      - Vault Agent Injector: vai.md
+      - Cert Manager: cm.md
+    - Dynamic DB Credentials:
+      - MySQL: databases.md
 
 markdown_extensions:
   - pymdownx.superfences:

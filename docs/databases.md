@@ -1,9 +1,12 @@
 # Dynamic MySQL Database Credentials
 
+![img](assets/db.png)
+> https://developer.hashicorp.com/vault/tutorials/db-credentials/database-secrets
+
 ## Requirements
 You can enable this lab by setting:
 
-```
+```yaml
 # terraform.tfvars
 databases = {
   enabled = true

@@ -1,12 +1,16 @@
 # Vault Secrets Operator
 
+![img](assets/vso.png)
+> https://www.hashicorp.com/blog/kubernetes-vault-integration-via-sidecar-agent-injector-vs-csi-provider
+
 ## Requirements
 For this lab youre going to need `kubectl`, `helm` and `jq` installed.
 
 Also in your `terraform.tfvars`:
-```
+
+```yaml
 # terraform.tfvars
-minikube = {
+kubernetes = {
   enabled                  = true
   vault_secrets_operator   = true
 }
@@ -144,6 +148,35 @@ $> kubectl get secret -n vso vso-secret -o json | jq '.data | map_values(@base64
   "_raw": "{\"data\":{\"password\":\"P@ssw0rd\",\"username\":\"Admin\"},\"metadata\":{\"created_time\":\"2023-10-26T07:46:46.998244367Z\",\"custom_metadata\":null,\"deletion_time\":\"\",\"destroyed\":false,\"version\":1}}",
   "password": "P@ssw0rd",
   "username": "Admin"
+}
+```
+
+You can update the secrets stored in Vault:
+
+```bash
+$> vault kv patch vso/secrets username=new-value
+== Secret Path ==
+esm/data/secrets
+
+======= Metadata =======
+Key                Value
+---                -----
+created_time       2023-11-13T12:11:09.131740262Z
+custom_metadata    <nil>
+deletion_time      n/a
+destroyed          false
+version            3
+```
+
+And see how the `vso-secret` gets the new value after `60s`:
+
+```bash
+$> kubectl get secret -n vso vso-secret -o json | jq '.data | map_values(@base64d)'
+{
+  "_raw": "{\"data\":{\"password\":\"P@ssw0rd\",\"username\":\"new-value\"},\"metadata\":{\"created_time\":\"2023-11-13T12:13:54.810581162Z\",\"custom_metadata\":null,\"deletion_time\":\"\",\"de
+stroyed\":false,\"version\":2}}",
+  "password": "P@ssw0rd",
+  "username": "new-value"
 }
 ```
 

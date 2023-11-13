@@ -1,12 +1,16 @@
 # External Secrets Manager
 
+![img](assets/esm.png)
+> https://external-secrets.io/latest/provider/hashicorp-vault/
+
 ## Requirements
 For this lab youre going to need `kubectl`, `helm` and `jq` installed.
 
 Also in your `terraform.tfvars`:
-```
+
+```yaml
 # terraform.tfvars
-minikube = {
+kubernetes = {
   enabled                  = true
   external_secrets_manager = true
 }
@@ -159,6 +163,32 @@ $> kubectl get secret -n esm esm-secret -o json | jq '.data | map_values(@base64
 }
 ```
 
+You can update the secrets stored in Vault:
+
+```bash
+$> vault kv patch esm/secrets username=new-value
+== Secret Path ==
+esm/data/secrets
+
+======= Metadata =======
+Key                Value
+---                -----
+created_time       2023-11-13T12:11:09.131740262Z
+custom_metadata    <nil>
+deletion_time      n/a
+destroyed          false
+version            3
+```
+
+And see how the `esm-secret` gets the new value after `60s`:
+
+```bash
+$> kubectl get secret -n esm esm-secret -o json | jq '.data | map_values(@base64d)'
+{
+  "password": "P@ssw0rd",
+  "username": "new-value" # !
+}
+```
 
 ## Addtional Resources
 * [https://github.com/external-secrets/external-secrets](https://github.com/external-secrets/external-secrets)

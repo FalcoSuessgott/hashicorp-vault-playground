@@ -1,12 +1,16 @@
 # Vault Agent Injector
 
+![img](assets/vai.png)
+> https://medium.com/hashicorp-engineering/hashicorp-vault-delivering-secrets-with-kubernetes-1b358c03b2a3
+
 ## Requirements
 For this lab youre going to need `kubectl`, `helm` and `jq` installed.
 
 Also in your `terraform.tfvars`:
-```
+
+```yaml
 # terraform.tfvars
-minikube = {
+kubernetes = {
   enabled                  = true
   vault_agent_injector     = true
 }

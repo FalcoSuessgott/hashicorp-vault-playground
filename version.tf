@@ -66,17 +66,17 @@ provider "vault" {
 }
 
 provider "kubernetes" {
-  host                   = module.minikube[0].kubeconfig.host
-  client_certificate     = module.minikube[0].kubeconfig.client_certificate
-  client_key             = module.minikube[0].kubeconfig.client_key
-  cluster_ca_certificate = module.minikube[0].kubeconfig.cluster_ca_certificate
+  host                   = module.kubernetes[0].kubeconfig.host
+  client_certificate     = module.kubernetes[0].kubeconfig.client_certificate
+  client_key             = module.kubernetes[0].kubeconfig.client_key
+  cluster_ca_certificate = module.kubernetes[0].kubeconfig.cluster_ca_certificate
 }
 
 provider "helm" {
   kubernetes {
-    host                   = module.minikube[0].kubeconfig.host
-    client_certificate     = module.minikube[0].kubeconfig.client_certificate
-    client_key             = module.minikube[0].kubeconfig.client_key
-    cluster_ca_certificate = module.minikube[0].kubeconfig.cluster_ca_certificate
+    host                   = module.kubernetes[0].kubeconfig.host
+    client_certificate     = module.kubernetes[0].kubeconfig.client_certificate
+    client_key             = module.kubernetes[0].kubeconfig.client_key
+    cluster_ca_certificate = module.kubernetes[0].kubeconfig.cluster_ca_certificate
   }
 }
