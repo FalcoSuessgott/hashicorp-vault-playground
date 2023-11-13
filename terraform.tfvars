@@ -27,7 +27,7 @@ databases = {
 }
 
 # Minikube Configuration
-minikube = {
+kubernetes = {
   # wether to enable minikube deployment
   enabled = true
 

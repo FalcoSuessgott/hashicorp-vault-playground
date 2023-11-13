@@ -1,12 +1,16 @@
 # Cert-Manager
 
+![img](assets/cm.png)
+> https://genekuo.medium.com/using-hashicorp-vault-as-certificate-manager-on-a-kubernetes-cluster-155604d39a60
+
 ## Requirements
 For this lab youre going to need `kubectl`, `helm` and `jq` installed.
 
 Also in your `terraform.tfvars`:
-```
+
+```yaml
 # terraform.tfvars
-minikube = {
+kubernetes = {
   enabled = true
   cert_manager = true
 }

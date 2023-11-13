@@ -45,3 +45,8 @@ new-lab:  ## creates a new lab directory
 	mkdir -p $(name)/templates
 	mkdir -p $(name)/files
 	echo "$(name)" > docs/$(name).md
+
+.PHONY: docs
+docs: ## render docs
+	firefox http://127.0.0.1:8000/home
+	mkdocs serve

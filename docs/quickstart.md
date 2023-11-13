@@ -48,8 +48,16 @@ vault = {
   }
 }
 
+# Dyanmic DB Credentials
+databases = {
+  enabled = true
+
+  # enable mysql db
+  mysql = true
+}
+
 # Minikube Configuration
-minikube = {
+kubernetes = {
   # wether to enable minikube deployment
   enabled = true
 
@@ -61,6 +69,9 @@ minikube = {
 
   # enable cert manager
   cert_manager = true
+
+  # enable vault agent injector
+  vault_agent_injector = true
 }
 ```
 

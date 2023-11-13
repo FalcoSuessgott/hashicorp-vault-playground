@@ -21,7 +21,7 @@ variable "databases" {
   })
 }
 
-variable "minikube" {
+variable "kubernetes" {
   type = object({
     enabled                  = optional(bool, true)
     external_secrets_manager = optional(bool, true)

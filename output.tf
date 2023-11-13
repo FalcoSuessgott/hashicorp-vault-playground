@@ -3,7 +3,7 @@ output "ca_cert" {
 }
 
 output "minikube_ip" {
-  value = module.minikube[0].minikube_ip
+  value = module.kubernetes[0].minikube_ip
 }
 
 output "root_token" {

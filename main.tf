@@ -37,8 +37,8 @@ module "database" {
 }
 
 # Spin up a K8s Cluster
-module "minikube" {
-  count = var.minikube.enabled ? 1 : 0
+module "kubernetes" {
+  count = var.kubernetes.enabled ? 1 : 0
 
   source = "./k8s-minikube/terraform"
 
@@ -47,11 +47,11 @@ module "minikube" {
 
 # Configure Vault K8s Auth Method
 module "vault_k8s" {
-  count = var.minikube.enabled ? 1 : 0
+  count = var.kubernetes.enabled ? 1 : 0
 
   source = "./vault-k8s/terraform"
 
-  depends_on = [module.minikube]
+  depends_on = [module.kubernetes]
 }
 
 module "vault_pki" {
@@ -63,7 +63,7 @@ module "vault_pki" {
 
 # Deploy External Secrets Manager
 module "esm" {
-  count = var.minikube.enabled && var.minikube.external_secrets_manager ? 1 : 0
+  count = var.kubernetes.enabled && var.kubernetes.external_secrets_manager ? 1 : 0
 
   source = "./k8s-external-secrets-operator/terraform"
 
@@ -73,7 +73,7 @@ module "esm" {
 }
 
 module "vai" {
-  count = var.minikube.enabled && var.minikube.vault_agent_injector ? 1 : 0
+  count = var.kubernetes.enabled && var.kubernetes.vault_agent_injector ? 1 : 0
 
   source = "./k8s-vault-agent-injector/terraform"
 
@@ -83,7 +83,7 @@ module "vai" {
 }
 
 module "vso" {
-  count = var.minikube.enabled && var.minikube.vault_secrets_operator ? 1 : 0
+  count = var.kubernetes.enabled && var.kubernetes.vault_secrets_operator ? 1 : 0
 
   source = "./k8s-vault-secrets-operator/terraform"
 
@@ -93,12 +93,12 @@ module "vso" {
 }
 
 module "cm" {
-  count = var.minikube.enabled && var.minikube.cert_manager ? 1 : 0
+  count = var.kubernetes.enabled && var.kubernetes.cert_manager ? 1 : 0
 
   source = "./k8s-cert-manager/terraform"
 
   ca_cert     = module.tls.ca.cert
-  minikube_ip = module.minikube[0].minikube_ip
+  minikube_ip = module.kubernetes[0].minikube_ip
 
   depends_on = [module.vault_k8s]
 }

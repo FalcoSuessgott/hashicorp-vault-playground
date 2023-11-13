@@ -1,9 +1,9 @@
 # Minikube
 A local Minikube cluster can be created during bootstrapping if enabled:
 
-```hcl
+```yaml
 # terraform.tfvars
-minikube = {
+kubernetes = {
   enabled = true
 }
 ```
