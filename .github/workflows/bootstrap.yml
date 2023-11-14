@@ -6,15 +6,8 @@ on:
 jobs:
   bootstrap:
     runs-on: ubuntu-latest
-
     steps:
     - uses: hashicorp/setup-terraform@v3
-
     - uses: actions/checkout@v4
-
-    - uses: nick-fields/retry@v2
-      with:
-        timeout_minutes: 10
-        max_attempts: 3
-        shell: bash
-        command: make bootstrap
+    - run: make bootstrap
+    - run: make teardown

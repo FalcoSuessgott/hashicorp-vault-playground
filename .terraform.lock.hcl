@@ -32,6 +32,26 @@ provider "registry.terraform.io/gavinbunney/kubectl" {
   ]
 }
 
+provider "registry.terraform.io/hashicorp/boundary" {
+  version     = "1.1.13"
+  constraints = "1.1.13"
+  hashes = [
+    "h1:aAuYsLXB+MiLGHW4krsOD9K0MHoc+1OPGJOEokETBxA=",
+    "zh:3197dbcf6e78908dab24cce7ed9982d378d91ad1ab003ccc819ba2a41d0f0837",
+    "zh:4af8fd2efd24d23777324c2ef13ce9a008eb4c616ceb71e7574f486cf098da35",
+    "zh:5fd9dd22b5b45e6d5961aea698fa6b69951d27f3f4c29fb1906df7be0720c53e",
+    "zh:63ecc78590ca9825abcccf8cf4cb474a06f94ae8f34ee6d1e9f723aab6577cee",
+    "zh:78d5eefdd9e494defcb3c68d282b8f96630502cac21d1ea161f53cfe9bb483b3",
+    "zh:84431995b5c765aaf6673407bf1209e3938fc19960eccbb41e7838579433182d",
+    "zh:bb0e148845c87dde168a7d6873be5ed3472d692bb4c1d07c286f5cb6eb5101cb",
+    "zh:c7bfee2e0bf02d33ba1fcddae012206ef5eb2bc3507543a9bbbdad0e3a66ec47",
+    "zh:d27d7e1d5895fe74370ae50e1c88beaa1de5b7e5c4bc9751d9c0c7121a61a3ac",
+    "zh:d7596b58460f4d90c59de6e47559dad11df64834346cf08f5e2d67f2e8a7a295",
+    "zh:e11440c92db44f62067a7e556df5bfb783eb361841ecef5d6fc8c1fbb83f6d44",
+    "zh:ea118a0d4c9db95e13b430978ca625dae295ea8f64d9a6a042f53633bd8bc6a3",
+  ]
+}
+
 provider "registry.terraform.io/hashicorp/helm" {
   version     = "2.12.1"
   constraints = "2.12.1"

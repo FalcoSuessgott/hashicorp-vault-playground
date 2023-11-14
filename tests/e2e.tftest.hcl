@@ -1,3 +1,24 @@
+variables {
+  databases = {
+    enabled = true
+    mysql   = true
+  }
+
+  kubernetes = {
+    enabled                  = true
+    kms                      = true
+    external_secrets_manager = true
+    vault_secrets_operator   = true
+    csi                      = true
+    cert_manager             = true
+    vault_agent_injector     = true
+  }
+
+  boundary = {
+    enabled = true
+  }
+}
+
 # only create vault and tls resources
 run "setup_vault" {
   plan_options {
@@ -73,7 +94,25 @@ run "mysql_user_is_created" {
 run "setup_minikube" {
   plan_options {
     target = [
-      module.kubernetes
+      module.minikube
+    ]
+  }
+}
+
+# set up boundary
+run "setup_boundary" {
+  plan_options {
+    target = [
+      module.boundary
+    ]
+  }
+}
+
+# setup boundary config
+run "setup_boundary_cfg" {
+  plan_options {
+    target = [
+      module.boundary_cfg
     ]
   }
 }

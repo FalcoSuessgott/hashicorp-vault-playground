@@ -8,3 +8,7 @@ variable "namespace" {
   type    = string
   default = "default"
 }
+
+variable "kms_enabled" {
+  type = bool
+}

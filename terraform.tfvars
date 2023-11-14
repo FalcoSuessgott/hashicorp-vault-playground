@@ -20,7 +20,7 @@ vault = {
 
 # Dyanmic DB Credentials
 databases = {
-  enabled = false
+  enabled = true
 
   # enable mysql db
   mysql = true
@@ -32,7 +32,7 @@ kubernetes = {
   enabled = true
 
   # enable kms plugin for secret encryption at rest
-  kms = false
+  kms = true
 
   # enable external secrets manager
   external_secrets_manager = true
@@ -48,4 +48,9 @@ kubernetes = {
 
   # enable vault agent injector
   vault_agent_injector = true
+}
+
+# enable Boundary Lab
+boundary = {
+  enabled = true
 }

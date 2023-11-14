@@ -46,6 +46,10 @@ terraform {
       source  = "hashicorp/http"
       version = "3.4.1"
     }
+    boundary = {
+      source  = "hashicorp/boundary"
+      version = "1.1.13"
+    }
   }
 }
 
@@ -62,23 +66,23 @@ provider "docker" {
 provider "vault" {
   address      = "https://127.0.0.1"
   token        = module.vault.root_token
-  ca_cert_file = "./vault-tls/output/ca.crt"
+  ca_cert_file = "${path.root}/vault-tls/output/ca.crt"
 }
 
 provider "kubernetes" {
-  host                   = module.kubernetes[0].kubeconfig.host
-  client_certificate     = module.kubernetes[0].kubeconfig.client_certificate
-  client_key             = module.kubernetes[0].kubeconfig.client_key
-  cluster_ca_certificate = module.kubernetes[0].kubeconfig.cluster_ca_certificate
+  host                   = try(module.minikube[0].kubeconfig.host, null)
+  client_certificate     = try(module.minikube[0].kubeconfig.client_certificate, null)
+  client_key             = try(module.minikube[0].kubeconfig.client_key, null)
+  cluster_ca_certificate = try(module.minikube[0].kubeconfig.cluster_ca_certificate, null)
 }
 
 provider "kubectl" {
   apply_retry_count = 3
 
-  host                   = module.kubernetes[0].kubeconfig.host
-  client_certificate     = module.kubernetes[0].kubeconfig.client_certificate
-  client_key             = module.kubernetes[0].kubeconfig.client_key
-  cluster_ca_certificate = module.kubernetes[0].kubeconfig.cluster_ca_certificate
+  host                   = try(module.minikube[0].kubeconfig.host, null)
+  client_certificate     = try(module.minikube[0].kubeconfig.client_certificate, null)
+  client_key             = try(module.minikube[0].kubeconfig.client_key, null)
+  cluster_ca_certificate = try(module.minikube[0].kubeconfig.cluster_ca_certificate, null)
 
   load_config_file = false
 }
@@ -86,9 +90,27 @@ provider "kubectl" {
 
 provider "helm" {
   kubernetes {
-    host                   = module.kubernetes[0].kubeconfig.host
-    client_certificate     = module.kubernetes[0].kubeconfig.client_certificate
-    client_key             = module.kubernetes[0].kubeconfig.client_key
-    cluster_ca_certificate = module.kubernetes[0].kubeconfig.cluster_ca_certificate
+    host                   = try(module.minikube[0].kubeconfig.host, null)
+    client_certificate     = try(module.minikube[0].kubeconfig.client_certificate, null)
+    client_key             = try(module.minikube[0].kubeconfig.client_key, null)
+    cluster_ca_certificate = try(module.minikube[0].kubeconfig.cluster_ca_certificate, null)
   }
+}
+
+# Uncomment for the Boundary Lab
+provider "boundary" {
+  addr = "http://127.0.0.1:9200"
+  recovery_kms_hcl = try(<<EOT
+kms "transit" {
+  purpose            = "recovery"
+  address            = "https://127.0.0.1:443"
+  disable_renewal    = "false"
+  token = "${module.vault.root_token}"
+  key_name           = "boundary_recovery"
+  mount_path         = "boundary/"
+  tls_skip_verify    = "false"
+  tls_ca_cert = "${path.root}/vault-tls/output/ca.crt"
+}
+EOT
+  , null)
 }

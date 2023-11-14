@@ -26,10 +26,14 @@ Please refer to the [documentation](https://falcosuessgott.github.io/hashicorp-v
 * [x] [Vault Agent Injector](https://falcosuessgott.github.io/hashicorp-vault-playground/vai/)
 * [x] [CSI Driver](https://falcosuessgott.github.io/hashicorp-vault-playground/csi/)
 * [x] [Certmanager](https://falcosuessgott.github.io/hashicorp-vault-playground/cm/)
+* [x] [Kubernetes Secret Method](https://falcosuessgott.github.io/hashicorp-vault-playground/boundary/)
 
 ### MySQL Dynamic DB Credentials
 * [x] [MySQL dynamic DB Credentials](https://falcosuessgott.github.io/hashicorp-vault-playground/databases/)
 
+### Boundary
+* [x] [Kubernetes Control Plane Access](https://falcosuessgott.github.io/hashicorp-vault-playground/boundary/)
+* [ ] SSH Access
+
 ### ToDos
 * [ ] Prometheus & Grafana + Vault Metrics
-* [ ] Boundary & (kubectl acccess, SSH)
