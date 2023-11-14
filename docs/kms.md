@@ -49,15 +49,15 @@ $> kubectl -n kube-system exec etcd-vault-playground -- sh -c "ETCDCTL_API=3 etc
 00000116
 ```
 
-### Deploy Trousseau 
+### Deploy Trousseau
 ```bash
 # troussea has been deployed as a daemon set in kube-system namespace
-$> kubectl get ds -n kube-system     
+$> kubectl get ds -n kube-system
 NAME                     DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR            AGE
 kube-proxy               1         1         1       1            1           kubernetes.io/os=linux   116s
 trousseau-kms-provider   1         1         1       1            1           <none>                   46s
 
-# a config map has been mounted into the daemon set, specifying the vault server and the vault token 
+# a config map has been mounted into the daemon set, specifying the vault server and the vault token
 $> kubectl describe cm trousseau-config -n kube-system
 Name:         trousseau-config
 Namespace:    kube-system
@@ -75,7 +75,7 @@ vault:
   address: https://host.minikube.internal
   token: hvs.CAESIJGPZdckGe6vN3-bMUzBmT3XywsQ8eNMWZljladJKsszGh4KHGh2cy5Tb3dpQjNjOEJuWHM2cVk2anhNcWtFSEQ # periodic & orphan token
 
-# Troussea creates a unix socket on the minikube host 
+# Troussea creates a unix socket on the minikube host
 $> minikube ssh "ls -la /opt/trousseau-kms"
 vaultkms.socket
 ```
@@ -104,7 +104,7 @@ storage-provisioner                        1/1     Running   3 (36s ago)   5m13s
 trousseau-kms-provider-jrflz               1/1     Running   0             4m28s
 ```
 
-### Verify Secrets are now encrypted 
+### Verify Secrets are now encrypted
 ```bash
 # create any secret
 $> kubectl create secret generic secret-post-deploy -n default --from-literal=key=value

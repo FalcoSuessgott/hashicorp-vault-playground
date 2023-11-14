@@ -1,7 +1,7 @@
 variable "vault" {
   type = object({
     ip_subnet = optional(string, "172.16.10.0/24")
-    version   = optional(string, "latest")
+    version   = optional(string, "1.15")
     base_port = optional(number, 8000)
     nodes     = optional(number, 3)
     initialization = optional(object({
@@ -11,6 +11,12 @@ variable "vault" {
       shares    = 5
       threshold = 3
     })
+  })
+}
+
+variable "boundary" {
+  type = object({
+    enabled = optional(bool, false)
   })
 }
 

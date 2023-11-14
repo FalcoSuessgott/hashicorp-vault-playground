@@ -36,7 +36,10 @@ nav:
       - Cert Manager: cm.md
     - Dynamic DB Credentials:
       - MySQL: databases.md
-    - Troubleshooting: Troubleshooting.md
+    - Boundary:
+      - Kubernetes Cluster Access: boundary.md
+  - Troubleshooting:
+    - troubleshooting.md
 
 markdown_extensions:
   - pymdownx.superfences:

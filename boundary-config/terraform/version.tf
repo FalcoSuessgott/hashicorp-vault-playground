@@ -6,13 +6,17 @@ terraform {
       source  = "hashicorp/vault"
       version = "3.24.0"
     }
+    docker = {
+      source  = "kreuzwerker/docker"
+      version = "3.0.2"
+    }
+    boundary = {
+      source  = "hashicorp/boundary"
+      version = "1.1.13"
+    }
     kubernetes = {
       source  = "hashicorp/kubernetes"
       version = "2.25.2"
-    }
-    kubectl = {
-      source  = "gavinbunney/kubectl"
-      version = "1.14.0"
     }
   }
 }

@@ -30,7 +30,7 @@ resource "kubernetes_secret" "service_account_secret" {
 }
 
 # https://developer.hashicorp.com/vault/docs/auth/kubernetes#use-the-vault-client-s-jwt-as-the-reviewer-jwt
-resource "kubernetes_cluster_role_binding" "role_binding" {
+resource "kubernetes_cluster_role_binding" "sa_validator" {
   metadata {
     name = "vault-token-reviewer"
   }
@@ -48,6 +48,7 @@ resource "kubernetes_cluster_role_binding" "role_binding" {
   }
 }
 
+
 # enable vault kubernetes auth backend for minikube cluster
 resource "vault_auth_backend" "minikube" {
   type = "kubernetes"
@@ -55,7 +56,7 @@ resource "vault_auth_backend" "minikube" {
 }
 
 # configure vault kubernetes auth backend
-resource "vault_kubernetes_auth_backend_config" "kubernetes_config" {
+resource "vault_kubernetes_auth_backend_config" "this" {
   backend = vault_auth_backend.minikube.path
 
   kubernetes_host    = "https://host.docker.internal:8443"

@@ -7,7 +7,7 @@ module "tls" {
 
   ip_sans = ["127.0.0.1"]
   dns_sans = concat(
-    ["host.minikube.internal"],
+    ["host.minikube.internal", "host.docker.internal"],
     [for v in range(0, var.vault.nodes) : format("vault-%02d", v + 1)]
   )
 }
@@ -16,7 +16,7 @@ module "tls" {
 module "vault" {
   source = "./vault-server/terraform"
 
-  vault_nodes   = 3
+  vault_nodes   = var.vault.nodes
   ip_subnet     = var.vault.ip_subnet
   vault_version = var.vault.version
 
@@ -28,6 +28,7 @@ module "vault" {
   depends_on = [module.tls]
 }
 
+# Deploy Mysql and Dynamic DB lab
 module "database" {
   count = var.databases.enabled ? 1 : 0
 
@@ -36,14 +37,11 @@ module "database" {
   depends_on = [module.vault]
 }
 
-# Spin up a K8s Cluster
-module "kubernetes" {
+# Spin up a minikube k8s cluster
+module "minikube" {
   count = var.kubernetes.enabled ? 1 : 0
 
   source = "./k8s-minikube/terraform"
-
-  kms_enabled = var.kubernetes.kms
-
 
   depends_on = [module.vault]
 }
@@ -54,9 +52,12 @@ module "vault_k8s" {
 
   source = "./vault-k8s/terraform"
 
-  depends_on = [module.kubernetes]
+  kms_enabled = var.kubernetes.kms
+
+  depends_on = [module.minikube]
 }
 
+# Setup Vaults PKI
 module "vault_pki" {
   source = "./vault-pki/terraform"
 
@@ -75,6 +76,7 @@ module "esm" {
   depends_on = [module.vault_k8s]
 }
 
+# Setup Vault Agent Injector
 module "vai" {
   count = var.kubernetes.enabled && var.kubernetes.vault_agent_injector ? 1 : 0
 
@@ -85,6 +87,7 @@ module "vai" {
   depends_on = [module.vault_k8s]
 }
 
+# Setup CSI Secet Driver
 module "csi" {
   count = var.kubernetes.enabled && var.kubernetes.csi ? 1 : 0
 
@@ -95,6 +98,7 @@ module "csi" {
   depends_on = [module.vault_k8s]
 }
 
+# Setup Vault Secets Operator
 module "vso" {
   count = var.kubernetes.enabled && var.kubernetes.vault_secrets_operator ? 1 : 0
 
@@ -105,13 +109,34 @@ module "vso" {
   depends_on = [module.vault_k8s]
 }
 
+# Setup Cert manager
 module "cm" {
   count = var.kubernetes.enabled && var.kubernetes.cert_manager ? 1 : 0
 
   source = "./k8s-cert-manager/terraform"
 
   ca_cert     = module.tls.ca.cert
-  minikube_ip = module.kubernetes[0].minikube_ip
+  minikube_ip = module.minikube[0].minikube_ip
 
   depends_on = [module.vault_k8s]
+}
+
+# Deploy Boundary
+module "boundary" {
+  count = var.boundary.enabled ? 1 : 0
+
+  source = "./boundary/terraform"
+
+  depends_on = [module.vault_k8s]
+}
+
+# Configure Boundary
+module "boundary_cfg" {
+  count = var.boundary.enabled ? 1 : 0
+
+  source = "./boundary-config/terraform"
+
+  minikube_ip = module.minikube[0].minikube_ip
+
+  depends_on = [module.boundary]
 }

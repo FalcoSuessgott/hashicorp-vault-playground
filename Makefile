@@ -12,8 +12,9 @@ fmt: ## fmt
 
 .PHONY: bootstrap
 bootstrap: deps ## boostrap cluster
-	source  .envrc
+	source .envrc
 	terraform init
+	terraform apply -target=module.boundary -auto-approve
 	terraform apply -auto-approve
 
 .PHONY: teardown
@@ -36,8 +37,9 @@ cleanup: ## cleanup
 	docker rm $(shell docker ps -aq) || true
 	docker network rm vault || true
 
-	rm terraform.tfstate || true
-	rm terraform.tfstate.backup || true
+	minikube delete || true
+
+	rm terraform.tfstate terraform.tfstate.backup || true
 
 .PHONY: new-lab
 new-lab:  ## creates a new lab directory
