@@ -7,7 +7,7 @@ module "tls" {
 
   ip_sans = ["127.0.0.1"]
   dns_sans = concat(
-    ["host.minikube.internal"],
+    ["host.minikube.internal", "host.docker.internal"],
     [for v in range(0, var.vault.nodes) : format("vault-%02d", v + 1)]
   )
 }
@@ -16,7 +16,7 @@ module "tls" {
 module "vault" {
   source = "./vault-server/terraform"
 
-  vault_nodes   = 3
+  vault_nodes   = var.vault.nodes
   ip_subnet     = var.vault.ip_subnet
   vault_version = var.vault.version
 
@@ -28,6 +28,7 @@ module "vault" {
   depends_on = [module.tls]
 }
 
+# Deploy Mysql and Dynamic DB lab
 module "database" {
   count = var.databases.enabled ? 1 : 0
 
@@ -43,6 +44,15 @@ module "kubernetes" {
   source = "./k8s-minikube/terraform"
 
   depends_on = [module.vault]
+}
+
+# Deploy Boundary
+module "boundary" {
+  count = var.boundary.enabled ? 1 : 0
+
+  source = "./boundary/terraform"
+
+  depends_on = [module.kubernetes]
 }
 
 # Configure Vault K8s Auth Method

@@ -20,7 +20,7 @@ vault = {
 
 # Dyanmic DB Credentials
 databases = {
-  enabled = true
+  enabled = false
 
   # enable mysql db
   mysql = true
@@ -32,14 +32,19 @@ kubernetes = {
   enabled = true
 
   # enable external secrets manager
-  external_secrets_manager = true
+  external_secrets_manager = false
 
   # enable vault secrets operator
-  vault_secrets_operator = true
+  vault_secrets_operator = false
 
   # enable cert manager
-  cert_manager = true
+  cert_manager = false
 
   # enable vault agent injector
-  vault_agent_injector = true
+  vault_agent_injector = false
+}
+
+# enable Boundary Lab
+boundary = {
+  enabled = true
 }
