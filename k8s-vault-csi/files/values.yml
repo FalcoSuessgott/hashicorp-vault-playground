@@ -1,0 +1,17 @@
+# https://github.com/hashicorp/vault-helm/blob/main/values.yaml
+server:
+  enabled: false
+
+injector:
+  enabled: false
+
+csi:
+  enabled: true
+  volumes:
+    - name: ca-cert
+      secret:
+        secretName: ca-cert
+  volumeMounts:
+    - name: ca-cert
+      mountPath: /opt
+      readOnly: true

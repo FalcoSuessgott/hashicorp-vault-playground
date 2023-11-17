@@ -96,6 +96,36 @@ run "kubeapi_is_available" {
   }
 }
 
+# run csi
+run "setup_csi" {
+  plan_options {
+    target = [
+      module.csi
+    ]
+  }
+}
+
+# check if csi Secret has been created
+run "csi_secret_has_been_written_to_pod" {
+  command = plan
+
+  module {
+    source = "./tests/external_cmd"
+  }
+
+  variables {
+    # external_cmd can only return json
+    command = <<EOT
+echo "{ \"value\": \"$(kubectl exec -n csi -it $(kubectl get pods -l=app=kuard -n csi --no-headers -o custom-columns=\":metadata.name\") -- env | grep USERNAME)\" }"
+EOT
+  }
+
+  assert {
+    condition     = length(data.shell_script.command.output) == 1 # data.shell_script.command.output["value"] == "USERNAME=Admin"
+    error_message = "CSI Secret has not been mounted into Pod or is not exported as Env Var"
+  }
+}
+
 # run esm
 run "setup_esm" {
   plan_options {

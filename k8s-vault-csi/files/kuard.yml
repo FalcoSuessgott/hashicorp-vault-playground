@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kuard
+  namespace: csi
+spec:
+  selector:
+    matchLabels:
+      app: kuard
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: kuard
+    spec:
+      containers:
+      - image: gcr.io/kuar-demo/kuard-amd64:1
+        name: kuard
+        # example for env var
+        env:
+          - name: USERNAME
+            valueFrom:
+              secretKeyRef:
+                key: username
+                name: csi-secret
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+        - name: csi
+          mountPath: /opt/secrets
+          readOnly: true
+      volumes:
+        - name: csi
+          csi:
+            driver: secrets-store.csi.k8s.io
+            readOnly: true
+            volumeAttributes:
+              secretProviderClass: vault-csi

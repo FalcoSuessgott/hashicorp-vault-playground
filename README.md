@@ -21,6 +21,7 @@ Please refer to the [documentation](https://falcosuessgott.github.io/hashicorp-v
 * [x] [External Secrets Manager](https://falcosuessgott.github.io/hashicorp-vault-playground/esm/)
 * [x] [Vault Secrets operator](https://falcosuessgott.github.io/hashicorp-vault-playground/vso/)
 * [x] [Vault Agent Injector](https://falcosuessgott.github.io/hashicorp-vault-playground/vai/)
+* [x] [CSI Driver](https://falcosuessgott.github.io/hashicorp-vault-playground/csi/)
 * [x] [Certmanager](https://falcosuessgott.github.io/hashicorp-vault-playground/cm/)
 
 ### MySQL Dynamic DB Credentials
@@ -28,3 +29,4 @@ Please refer to the [documentation](https://falcosuessgott.github.io/hashicorp-v
 
 ### ToDos
 * [ ] Prometheus & Grafana + Vault Metrics
+* [ ] Boundary & (kubectl acccess, SSH)
