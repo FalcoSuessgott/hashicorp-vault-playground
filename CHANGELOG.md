@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+### [1.6.1](https://github.com/FalcoSuessgott/hashicorp-vault-playground/compare/v1.6.0...v1.6.1) (2023-11-17)
+
+
+### Bug Fixes
+
+* **bootstrap:** fix target ([e3d2c4a](https://github.com/FalcoSuessgott/hashicorp-vault-playground/commit/e3d2c4ab42c6da25ab2e5a73f17a120ed4e76c69))
+
 ## [1.6.0](https://github.com/FalcoSuessgott/hashicorp-vault-playground/compare/v1.5.0...v1.6.0) (2023-11-10)
 
 
