@@ -37,6 +37,9 @@ kubernetes = {
   # enable vault secrets operator
   vault_secrets_operator = true
 
+  # enable secrets using the CSI driver
+  csi = true
+
   # enable cert manager
   cert_manager = true
 

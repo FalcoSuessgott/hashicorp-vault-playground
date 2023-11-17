@@ -96,6 +96,37 @@ run "kubeapi_is_available" {
   }
 }
 
+# run csi
+run "setup_csi" {
+  plan_options {
+    target = [
+      module.csi
+    ]
+  }
+}
+
+# check if csi Secret has been created
+run "csi_secret_has_been_written_to_pod" {
+  command = plan
+
+  module {
+    source = "./tests/external_cmd"
+  }
+
+  variables {
+    command = "kubectl get secret -n esm esm-secret -o json | jq '.data | map_values(@base64d)'"
+  }
+
+  variables {
+    command = "kubectl exec -n csi -it $(kubectl get pods -l=app=kuard -n csi --no-headers -o custom-columns=\":metadata.name\") -- cat /opt/secrets/password"
+  }
+
+  assert {
+    condition     = length(data.shell_script.command.output) == 2
+    error_message = "CSI Secret is not injected into Pod"
+  }
+}
+
 # run esm
 run "setup_esm" {
   plan_options {
