@@ -18,6 +18,7 @@ Bootstrap a local Vault HA Cluster with many useful learning labs in under a min
 * [x] [External Secrets Manager](https://falcosuessgott.github.io/hashicorp-vault-playground/esm/)
 * [x] [Vault Secrets operator](https://falcosuessgott.github.io/hashicorp-vault-playground/vso/)
 * [x] [Vault Agent Injector](https://falcosuessgott.github.io/hashicorp-vault-playground/vai/)
+* [x] [CSI Driver](https://falcosuessgott.github.io/hashicorp-vault-playground/csi/)
 * [x] [Certmanager](https://falcosuessgott.github.io/hashicorp-vault-playground/cm/)
 
 ### MySQL Dynamic DB Credentials
@@ -25,3 +26,4 @@ Bootstrap a local Vault HA Cluster with many useful learning labs in under a min
 
 ### ToDos
 * [ ] Prometheus & Grafana + Vault Metrics
+* [ ] Boundary & (kubectl acccess, SSH)
