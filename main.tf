@@ -82,6 +82,16 @@ module "vai" {
   depends_on = [module.vault_k8s]
 }
 
+module "csi" {
+  count = var.kubernetes.enabled && var.kubernetes.csi ? 1 : 0
+
+  source = "./k8s-vault-csi/terraform"
+
+  ca_cert = module.tls.ca.cert
+
+  depends_on = [module.vault_k8s]
+}
+
 module "vso" {
   count = var.kubernetes.enabled && var.kubernetes.vault_secrets_operator ? 1 : 0
 

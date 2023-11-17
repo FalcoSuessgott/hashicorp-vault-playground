@@ -11,7 +11,7 @@ fmt: ## fmt
 .PHONY: bootstrap
 bootstrap: deps ## boostrap cluster
 	terraform init
-	terraform apply -target=module.minikube -auto-approve
+	terraform apply -target=module.kubernetes -auto-approve
 	terraform apply -auto-approve
 
 .PHONY: teardown
