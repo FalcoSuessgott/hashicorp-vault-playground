@@ -14,6 +14,12 @@ variable "vault" {
   })
 }
 
+variable "boundary" {
+  type = object({
+    enabled = optional(bool, true)
+  })
+}
+
 variable "databases" {
   type = object({
     enabled = optional(bool, true)
