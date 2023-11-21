@@ -34,6 +34,9 @@ resource "local_file" "secret_store" {
 # Apply Secret Store CRD
 resource "kubectl_manifest" "secret_store" {
   yaml_body = local_file.secret_store.content
+
+  depends_on = [helm_release.esm]
+
 }
 
 # Render ExternalSecret CRD
@@ -52,4 +55,6 @@ resource "local_file" "external_secret" {
 # Apply CRD
 resource "kubectl_manifest" "external_secret" {
   yaml_body = local_file.external_secret.content
+
+  depends_on = [helm_release.esm]
 }

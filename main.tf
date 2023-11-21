@@ -102,3 +102,12 @@ module "cm" {
 
   depends_on = [module.vault_k8s]
 }
+
+module "monitoring" {
+  source = "./k8s-monitoring/terraform"
+
+  ca_cert     = module.tls.ca.cert
+  minikube_ip = module.minikube[0].minikube_ip
+
+  depends_on = [module.vault_k8s]
+}
