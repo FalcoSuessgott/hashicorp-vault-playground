@@ -4,3 +4,4 @@
 **/terraform.tfstate.backup
 **/.vault_token
 **/output/*
+**/minikube-config

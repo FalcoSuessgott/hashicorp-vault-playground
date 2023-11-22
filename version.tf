@@ -72,6 +72,18 @@ provider "kubernetes" {
   cluster_ca_certificate = module.kubernetes[0].kubeconfig.cluster_ca_certificate
 }
 
+provider "kubectl" {
+  apply_retry_count = 3
+
+  host                   = module.kubernetes[0].kubeconfig.host
+  client_certificate     = module.kubernetes[0].kubeconfig.client_certificate
+  client_key             = module.kubernetes[0].kubeconfig.client_key
+  cluster_ca_certificate = module.kubernetes[0].kubeconfig.cluster_ca_certificate
+
+  load_config_file = false
+}
+
+
 provider "helm" {
   kubernetes {
     host                   = module.kubernetes[0].kubeconfig.host

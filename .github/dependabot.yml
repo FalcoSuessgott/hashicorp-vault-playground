@@ -1,5 +1,16 @@
 version: 2
 updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "daily"
+      time: "08:00"
+    labels:
+      - "dependencies"
+    commit-message:
+      prefix: "chore"
+      include: "scope"
+
   - package-ecosystem: "terraform"
     directory: "."
     schedule:
@@ -7,4 +18,6 @@ updates:
       time: "08:00"
     labels:
       - "dependencies"
-    target-branch: dev
+    commit-message:
+      prefix: "chore"
+      include: "scope"

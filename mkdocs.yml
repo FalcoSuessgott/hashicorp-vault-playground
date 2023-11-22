@@ -34,6 +34,7 @@ nav:
       - Cert Manager: cm.md
     - Dynamic DB Credentials:
       - MySQL: databases.md
+    - Troubleshooting: Troubleshooting.md
 
 markdown_extensions:
   - pymdownx.superfences:
