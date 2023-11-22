@@ -14,6 +14,7 @@ resource "vault_database_secret_backend_connection" "mysql" {
     // no spaces important!
     connection_url = "{{username}}:{{password}}@tcp(${docker_container.mysql.name}:3306)/${var.database.name}"
   }
+
   # wait until mysql can accept connections
   depends_on = [terraform_data.wait_for]
 }
