@@ -1,0 +1,17 @@
+name: make bootstrap CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  bootstrap:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: hashicorp/setup-terraform@v2
+    - uses: actions/checkout@v3
+    - name: bootstrap
+      run: make bootstrap

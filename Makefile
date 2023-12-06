@@ -1,3 +1,5 @@
+SHELL := /bin/bash
+
 default: help
 
 .PHONY: help
@@ -10,6 +12,7 @@ fmt: ## fmt
 
 .PHONY: bootstrap
 bootstrap: deps ## boostrap cluster
+	source  .envrc
 	terraform init
 	terraform apply -target=module.kubernetes -auto-approve
 	terraform apply -auto-approve
