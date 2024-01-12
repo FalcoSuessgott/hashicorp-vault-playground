@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.9.0](https://github.com/FalcoSuessgott/hashicorp-vault-playground/compare/v1.8.0...v1.9.0) (2024-01-12)
+
+
+### Features
+
+* **csi:** add csi labs ([ca707b8](https://github.com/FalcoSuessgott/hashicorp-vault-playground/commit/ca707b8ffe5b1a50d03be4f97c482eef048df649))
+
 ### [1.8.1](https://github.com/FalcoSuessgott/hashicorp-vault-playground/compare/v1.8.0...v1.8.1) (2024-01-12)
 
 
