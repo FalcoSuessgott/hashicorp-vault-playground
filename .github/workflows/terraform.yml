@@ -1,9 +1,6 @@
 name: Terraform
 
 on:
-  push:
-    branches:
-      - main
   pull_request:
 
 jobs:
