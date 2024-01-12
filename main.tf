@@ -102,3 +102,11 @@ module "cm" {
 
   depends_on = [module.vault_k8s]
 }
+
+module "ssh" {
+  count = var.ssh.enabled ? 1 : 0
+
+  source = "./vault-ssh/terraform"
+
+  depends_on = [module.vault]
+}

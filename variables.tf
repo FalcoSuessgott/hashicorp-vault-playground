@@ -30,3 +30,9 @@ variable "kubernetes" {
     cert_manager             = optional(bool, true)
   })
 }
+
+variable "ssh" {
+  type = object({
+    enabled = optional(bool, true)
+  })
+}
