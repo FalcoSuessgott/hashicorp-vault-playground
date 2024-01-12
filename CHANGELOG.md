@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.7.0](https://github.com/FalcoSuessgott/hashicorp-vault-playground/compare/v1.6.1...v1.7.0) (2024-01-12)
+
+
+### Features
+
+* **ci:** add CI for bootstrap ([e2082b5](https://github.com/FalcoSuessgott/hashicorp-vault-playground/commit/e2082b50e1a74c7546af606897ae7d87d18689ab))
+
+
+### Bug Fixes
+
+* **kubectl:** add kubectl provider block ([d847841](https://github.com/FalcoSuessgott/hashicorp-vault-playground/commit/d847841d557a6223cc2530835c50f806ebc6a288))
+
 ### [1.6.1](https://github.com/FalcoSuessgott/hashicorp-vault-playground/compare/v1.6.0...v1.6.1) (2023-11-17)
 
 
