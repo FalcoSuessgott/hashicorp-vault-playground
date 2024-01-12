@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+### [1.7.1](https://github.com/FalcoSuessgott/hashicorp-vault-playground/compare/v1.7.0...v1.7.1) (2024-01-12)
+
+
+### Bug Fixes
+
+* **ci:** do not run on main ([7e35ce9](https://github.com/FalcoSuessgott/hashicorp-vault-playground/commit/7e35ce9c06434393872abcb33a2a360bccd27320))
+
 ## [1.7.0](https://github.com/FalcoSuessgott/hashicorp-vault-playground/compare/v1.6.1...v1.7.0) (2024-01-12)
 
 
