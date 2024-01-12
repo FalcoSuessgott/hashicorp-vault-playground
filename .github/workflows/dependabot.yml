@@ -15,7 +15,7 @@ jobs:
         id: dependabot-metadata
         uses: dependabot/fetch-metadata@v1
       - name: Enable auto-merge for Dependabot PRs
-        if: ${{contains(fromJSON('["terraform", "github-actions"]'), steps.dependabot-metadata.outputs.dependency-names) && steps.dependabot-metadata.outputs.update-type == 'version-update:semver-patch'}}
+        if: ${{steps.dependabot-metadata.outputs.update-type == 'version-update:semver-patch'}}
         run: gh pr merge --auto --merge "$PR_URL"
         env:
           PR_URL: ${{github.event.pull_request.html_url}}
