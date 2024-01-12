@@ -1,9 +1,6 @@
 name: make bootstrap CI
 
 on:
-  push:
-    branches:
-      - main
   pull_request:
 
 jobs:
@@ -12,6 +9,12 @@ jobs:
 
     steps:
     - uses: hashicorp/setup-terraform@v2
+
     - uses: actions/checkout@v3
-    - name: bootstrap
-      run: make bootstrap
+
+    - uses: nick-fields/retry@v2
+      with:
+        timeout_minutes: 10
+        max_attempts: 3
+        shell: bash
+        command: make bootstrap
