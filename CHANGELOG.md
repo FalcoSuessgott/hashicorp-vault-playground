@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.8.0](https://github.com/FalcoSuessgott/hashicorp-vault-playground/compare/v1.7.1...v1.8.0) (2024-01-12)
+
+
+### Features
+
+* **dependabot:** automerge ([a7ae6a8](https://github.com/FalcoSuessgott/hashicorp-vault-playground/commit/a7ae6a8fab6ac7889f3eba5acae594a5192a1110))
+
 ### [1.7.1](https://github.com/FalcoSuessgott/hashicorp-vault-playground/compare/v1.7.0...v1.7.1) (2024-01-12)
 
 
