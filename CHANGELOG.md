@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+### [1.8.1](https://github.com/FalcoSuessgott/hashicorp-vault-playground/compare/v1.8.0...v1.8.1) (2024-01-12)
+
+
+### Bug Fixes
+
+* **defaults:** automerge GH actions and terraform PRs ([7180227](https://github.com/FalcoSuessgott/hashicorp-vault-playground/commit/7180227a819653135424c893ab6e7eded602fe45))
+
 ## [1.8.0](https://github.com/FalcoSuessgott/hashicorp-vault-playground/compare/v1.7.1...v1.8.0) (2024-01-12)
 
 
