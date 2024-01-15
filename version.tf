@@ -24,7 +24,7 @@ terraform {
     }
     minikube = {
       source  = "scott-the-programmer/minikube"
-      version = "0.3.5"
+      version = "0.3.7"
     }
     kubernetes = {
       source  = "hashicorp/kubernetes"
