@@ -14,7 +14,6 @@ fmt: ## fmt
 bootstrap: deps ## boostrap cluster
 	source  .envrc
 	terraform init
-	terraform apply -target=module.kubernetes -auto-approve
 	terraform apply -auto-approve
 
 .PHONY: teardown

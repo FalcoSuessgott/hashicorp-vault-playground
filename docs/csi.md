@@ -22,7 +22,7 @@ You then can bootstrap the cluster using `make bootstrap`
 ## Overview
 The following resources will be created:
 
-1. The Vault Agent Injector Helm Chart is going to be installed in the `csi` Namespace.
+1. The Vault Helm Chart is going to be installed in the `csi` Namespace.
 2. The CSI Driver is installed using the official Helm Chart
 3. A Kubernetes Auth Role `csi` bound to the `csi` Namespace & Service Account
 4. KVv2 Secrets under `csi/secrets` containing 2 Example Secrets
@@ -41,7 +41,7 @@ csi     csi             1               2024-01-12 14:13:14.639161204 +0100 CET 
 vault   csi             2               2024-01-12 14:15:14.327992163 +0100 CET deployed        vault-0.27.0                    1.15.2
 ```
 
-Additionally, a Vault Kubernetes Auth Role bounded to the Namespace and the vai Service Account has been created:
+Additionally, a Vault Kubernetes Auth Role bounded to the Namespace and the default Service Account has been created:
 
 ```bash
 # https://localhost/ui/vault/access/minikube-cluster/item/role/csi
@@ -86,7 +86,7 @@ password    P@ssw0rd
 username    Admin
 ```
 
-A corresponding policy `csi` that allows reading the vai secrets has also been crated:
+A corresponding policy `csi` that allows reading the csi secrets has also been crated:
 
 ```bash
 # https://localhost/ui/vault/policy/acl/csi
