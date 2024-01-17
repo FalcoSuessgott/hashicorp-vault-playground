@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.10.0](https://github.com/FalcoSuessgott/hashicorp-vault-playground/compare/v1.9.0...v1.10.0) (2024-01-17)
+
+
+### Features
+
+* **boostrap:** make us of vault tf provider lazy init ([ed8eef5](https://github.com/FalcoSuessgott/hashicorp-vault-playground/commit/ed8eef5e163f6153cdc0b06208055fc640d047a1))
+
 ## [1.9.0](https://github.com/FalcoSuessgott/hashicorp-vault-playground/compare/v1.8.0...v1.9.0) (2024-01-12)
 
 
