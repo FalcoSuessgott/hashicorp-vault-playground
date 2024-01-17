@@ -20,7 +20,7 @@ Once you have all requirements installed, you can bootstrap the playground using
 ```bash
 $> git clone git@github.com:FalcoSuessgott/hashicorp-vault-playground.git
 $> cd hashicorp-vault-playground
-$> make bootstrap
+$> make bootstrap # equals terraform init && terraform apply
 ```
 
 ## Configuration
@@ -66,6 +66,9 @@ kubernetes = {
 
   # enable vault secrets operator
   vault_secrets_operator = true
+
+  # enable secrets using the CSI driver
+  csi = true
 
   # enable cert manager
   cert_manager = true
@@ -128,5 +131,5 @@ $> docker exec -it vault-01 sh # get a shell into vault-01 container
 Once youre done testing, you can destroy all resource, simply by running:
 
 ```bash
-$> terraform destroy # or make teadown
+$> terraform destroy # or make teardown
 ```

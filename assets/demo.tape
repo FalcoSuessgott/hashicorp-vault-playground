@@ -20,6 +20,12 @@ Enter
 Sleep 5s
 
 Show
+Type "vault kv get esm-secret/secret"
+Enter
+Sleep 5s
+
+
+Show
 Type "kubectl get pods -A"
 Enter
 Sleep 5s

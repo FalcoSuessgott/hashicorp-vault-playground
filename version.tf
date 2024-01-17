@@ -61,7 +61,7 @@ provider "docker" {
 
 provider "vault" {
   address      = "https://127.0.0.1"
-  token        = try(file(".vault_token"), "")
+  token        = module.vault.root_token
   ca_cert_file = "./vault-tls/output/ca.crt"
 }
 
