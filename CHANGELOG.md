@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+### [1.10.1](https://github.com/FalcoSuessgott/hashicorp-vault-playground/compare/v1.10.0...v1.10.1) (2024-01-18)
+
+
+### Bug Fixes
+
+* **commitlint:** ignore dependabot commits ([ddedf21](https://github.com/FalcoSuessgott/hashicorp-vault-playground/commit/ddedf21eaccead95c8dc66f3694ada9a66ea4012))
+
 ## [1.10.0](https://github.com/FalcoSuessgott/hashicorp-vault-playground/compare/v1.9.0...v1.10.0) (2024-01-17)
 
 
