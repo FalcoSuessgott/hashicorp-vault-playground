@@ -46,3 +46,8 @@ kubernetes = {
   # enable vault agent injector
   vault_agent_injector = true
 }
+
+
+ssh = {
+  enabled = false
+}
