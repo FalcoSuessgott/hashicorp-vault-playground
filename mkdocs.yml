@@ -28,6 +28,7 @@ nav:
       - HAProxy: haproxy.md
     - Kubernetes:
       - Minikube: minikube.md
+      - KMS: kms.md
       - External Secrets Manager: esm.md
       - Vault Secrets Operator: vso.md
       - Vault Agent Injector: vai.md

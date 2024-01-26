@@ -24,6 +24,7 @@ variable "databases" {
 variable "kubernetes" {
   type = object({
     enabled                  = optional(bool, true)
+    kms                      = optional(bool, false)
     external_secrets_manager = optional(bool, true)
     vault_secrets_operator   = optional(bool, true)
     vault_agent_injector     = optional(bool, true)

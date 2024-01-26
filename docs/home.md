@@ -15,6 +15,7 @@ Bootstrap a local Vault HA Cluster with many useful learning labs in under a min
 
 ### Kubernetes
 * [x] [Vault Kubernetes Auth Method](https://falcosuessgott.github.io/hashicorp-vault-playground/minikube/)
+* [x] [Vault as a KMS Provider](https://falcosuessgott.github.io/hashicorp-vault-playground/kms/)
 * [x] [External Secrets Manager](https://falcosuessgott.github.io/hashicorp-vault-playground/esm/)
 * [x] [Vault Secrets operator](https://falcosuessgott.github.io/hashicorp-vault-playground/vso/)
 * [x] [Vault Agent Injector](https://falcosuessgott.github.io/hashicorp-vault-playground/vai/)
