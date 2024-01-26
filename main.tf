@@ -42,6 +42,9 @@ module "kubernetes" {
 
   source = "./k8s-minikube/terraform"
 
+  kms_enabled = var.kubernetes.kms
+
+
   depends_on = [module.vault]
 }
 

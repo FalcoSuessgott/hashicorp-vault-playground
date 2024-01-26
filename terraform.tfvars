@@ -20,7 +20,7 @@ vault = {
 
 # Dyanmic DB Credentials
 databases = {
-  enabled = true
+  enabled = false
 
   # enable mysql db
   mysql = true
@@ -30,6 +30,9 @@ databases = {
 kubernetes = {
   # wether to enable minikube deployment
   enabled = true
+
+  # enable kms plugin for secret encryption at rest
+  kms = false
 
   # enable external secrets manager
   external_secrets_manager = true

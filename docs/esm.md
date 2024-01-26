@@ -18,7 +18,6 @@ kubernetes = {
 
 You then can bootstrap the cluster using `make bootstrap`
 
-
 ## Overview
 The following resources will be created:
 
