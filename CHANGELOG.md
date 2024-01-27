@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.11.0](https://github.com/FalcoSuessgott/hashicorp-vault-playground/compare/v1.10.1...v1.11.0) (2024-01-27)
+
+
+### Features
+
+* **kms:** add trousseau as kms plugin ([cadd93b](https://github.com/FalcoSuessgott/hashicorp-vault-playground/commit/cadd93b080b1ff3baa375411b7ff5e73ba2814bb))
+
 ### [1.10.1](https://github.com/FalcoSuessgott/hashicorp-vault-playground/compare/v1.10.0...v1.10.1) (2024-01-18)
 
 
