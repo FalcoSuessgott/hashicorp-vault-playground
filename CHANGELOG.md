@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.12.0](https://github.com/FalcoSuessgott/hashicorp-vault-playground/compare/v1.11.0...v1.12.0) (2024-02-05)
+
+
+### Features
+
+* **boundary:** add boundary lab ([50dda1e](https://github.com/FalcoSuessgott/hashicorp-vault-playground/commit/50dda1e3120d2729fb84d1ecbffd78c375e795b9))
+
 ## [1.11.0](https://github.com/FalcoSuessgott/hashicorp-vault-playground/compare/v1.10.1...v1.11.0) (2024-01-27)
 
 
