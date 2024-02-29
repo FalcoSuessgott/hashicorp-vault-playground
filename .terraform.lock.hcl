@@ -2,16 +2,16 @@
 # Manual edits may be lost in future updates.
 
 provider "registry.terraform.io/devops-rob/terracurl" {
-  version     = "1.1.0"
-  constraints = "1.1.0"
+  version     = "1.2.0"
+  constraints = "1.2.0"
   hashes = [
-    "h1:KJDCzx3jNEoghZ70MnWcFgpIzER7LAQwpbOqz7LWKl0=",
-    "zh:30b6484decca0ff28806a323af2a00232fc16a6571e26f490a67205b3233098d",
-    "zh:68580fcaf39986bee302e1b89c1a255bfec720684b1981197d75f36148146376",
-    "zh:b7b589eb8e09e07ef999c410f79c1fe8faaa0c9eb572fd557af9cd14720213a3",
-    "zh:beb145381895bec30a940ddbd9035e277e1e4b2ec3155c6d5a382cee1fbdf2e6",
-    "zh:e18113ad8c5e2de6e2a34cf40d2f27ff8cda308e9d89e91114fb8366946c0184",
-    "zh:e405ad705e14b841d5d827e9ce1d0a3b3149bab6b0ff14d266359b83cf144c87",
+    "h1:TlxG2T+Y4QwKTRPHlhVfiSVIPVRRjh17T4GvFz9olQU=",
+    "zh:5bf39b88cd42bb3b8cecf6c3c5ccac8c7ea1c20a84b6f8800d24d495b2f80af8",
+    "zh:6324650bfed8056c316a1f2dc0e3767a5fbdbdcc3ad2685f52149edd84e8c039",
+    "zh:aaa1314ac853e8424190e23749f7f39a3aa15452a27c9c213692e98a77cf816c",
+    "zh:da8e6700276e9690b0fb7b10c7cd2043e915a15d8881f76b25e35e9af23c2c7b",
+    "zh:fd918c78fd05866c01328cc1954f0cd275b6ec76dcb9893d7c2109d039462ba5",
+    "zh:ff4e45fb92b05c45f49234dc40cd14e154bacb6c3c7ccfba68bb28c7b3a8cf20",
   ]
 }
 

@@ -20,7 +20,7 @@ terraform {
     }
     terracurl = {
       source  = "devops-rob/terracurl"
-      version = "1.1.0"
+      version = "1.2.0"
     }
     minikube = {
       source  = "scott-the-programmer/minikube"
