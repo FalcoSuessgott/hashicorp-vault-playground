@@ -1,28 +1,30 @@
-resource "kubernetes_config_map" "this" {
+resource "vault_policy" "kms" {
   count = var.kms_enabled ? 1 : 0
 
+  name = "kms"
+
+  policy = file("${path.module}/../files/vault-policy.hcl")
+}
+
+resource "kubernetes_secret" "ca_cert" {
   metadata {
-    name      = "trousseau-config"
+    name      = "ca-cert"
     namespace = "kube-system"
   }
 
   data = {
-    cfg = templatefile("${path.module}/../templates/trousseau-config.yml.tmpl", {
-      token = vault_token.this[0].client_token
-    })
+    "ca.crt" = var.ca_cert
   }
-
 }
 
-resource "kubectl_manifest" "secret_store" {
-  count = var.kms_enabled ? 1 : 0
-
-
-  yaml_body = file("${path.module}/../files/trousseau.yml")
-
-  depends_on = [kubernetes_config_map.this]
+resource "vault_kubernetes_auth_backend_role" "kms" {
+  backend                          = vault_auth_backend.minikube.path
+  role_name                        = "kms"
+  bound_service_account_names      = ["default"]
+  bound_service_account_namespaces = ["kube-system"]
+  token_ttl                        = 3600
+  token_policies                   = [vault_policy.kms[0].name]
 }
-
 
 resource "vault_mount" "transit" {
   count = var.kms_enabled ? 1 : 0
@@ -38,15 +40,6 @@ resource "vault_transit_secret_backend_key" "key" {
   name    = "kms"
 
   deletion_allowed = true
-}
-
-
-resource "vault_policy" "kms" {
-  count = var.kms_enabled ? 1 : 0
-
-  name = "kms"
-
-  policy = file("${path.module}/../files/vault-policy.hcl")
 }
 
 resource "vault_token" "this" {

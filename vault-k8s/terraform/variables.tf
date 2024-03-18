@@ -3,6 +3,9 @@ variable "service_account_name" {
   default = "sa-validator"
 }
 
+variable "ca_cert" {
+  type = string
+}
 
 variable "namespace" {
   type    = string

@@ -15,9 +15,8 @@ plugins:
       enable_creation_date: false
 
 nav:
-  - Home:
-    - home.md
-    - quickstart.md
+  - Home: home.md
+  - Quickstart: quickstart.md
   - Labs:
     - Vault:
       - Vault HA Cluster: vault.md
