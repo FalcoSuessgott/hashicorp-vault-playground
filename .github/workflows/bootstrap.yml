@@ -12,5 +12,5 @@ jobs:
     - run: |
         terraform init
         terraform apply -target=module.boundary -auto-approve
-        terraform apply -auto-approvemake bootstrap
+        terraform apply -auto-approve
     - run: make teardown
