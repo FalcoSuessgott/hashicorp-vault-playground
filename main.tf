@@ -53,6 +53,7 @@ module "vault_k8s" {
   source = "./vault-k8s/terraform"
 
   kms_enabled = var.kubernetes.kms
+  ca_cert     = module.tls.ca.cert
 
   depends_on = [module.minikube]
 }

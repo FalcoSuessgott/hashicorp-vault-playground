@@ -1,8 +1,5 @@
 # KMS
-This Lab uses [https://github.com/ondat/trousseau](https://github.com/ondat/trousseau) as KMS Plugin for Vault
-
-![img](assets/kms.png)
-> https://github.com/ondat/trousseau/blob/main/assets/Ondat%20Diagram-w-all.png
+This Lab uses [https://github.com/FalcoSuessgott/vault-kubernetes-kms](https://github.com/FalcoSuessgott/vault-kubernetes-kms) as KMS Plugin for Vault
 
 ## Requirements
 For this lab youre going to need `kubectl`, `helm` and `jq` installed.
@@ -27,7 +24,12 @@ You then can bootstrap the cluster using `make bootstrap`
 $> kubectl create secret generic secret-pre-deploy -n default --from-literal=key=value
 
 # output the secret in k8s storage
-$> kubectl -n kube-system exec etcd-vault-playground -- sh -c "ETCDCTL_API=3 etcdctl --endpoints=https://127.0.0.1:2379 --cert /var/lib/minikube/certs/etcd/server.crt --key /var/lib/minikube/certs/etcd/server.key --cacert /var/lib/minikube/certs/etcd/ca.crt get /registry/secrets/default/secret-pre-deploy" | hexdump -C
+$> kubectl -n kube-system exec etcd-vault-playground -- sh -c "ETCDCTL_API=3 etcdctl \
+    --endpoints=https://127.0.0.1:2379 \
+    --cert /var/lib/minikube/certs/etcd/server.crt \
+    --key /var/lib/minikube/certs/etcd/server.key \
+    --cacert /var/lib/minikube/certs/etcd/ca.crt \
+    get /registry/secrets/default/secret-pre-deploy" | hexdump -C
 00000000  2f 72 65 67 69 73 74 72  79 2f 73 65 63 72 65 74  |/registry/secret|
 00000010  73 2f 64 65 66 61 75 6c  74 2f 73 65 63 72 65 74  |s/default/secret|
 00000020  2d 70 72 65 2d 64 65 70  6c 6f 79 0a 6b 38 73 00  |-pre-deploy.k8s.|
@@ -49,59 +51,59 @@ $> kubectl -n kube-system exec etcd-vault-playground -- sh -c "ETCDCTL_API=3 etc
 00000116
 ```
 
-### Deploy Trousseau
+### Deploy the KMS plugin
+
 ```bash
-# troussea has been deployed as a daemon set in kube-system namespace
-$> kubectl get ds -n kube-system
-NAME                     DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR            AGE
-kube-proxy               1         1         1       1            1           kubernetes.io/os=linux   116s
-trousseau-kms-provider   1         1         1       1            1           <none>                   46s
+# deploy the kms-plugin
+$> kubectl apply -f vault-k8s/files/vault-kubernetes-kms.yml
 
-# a config map has been mounted into the daemon set, specifying the vault server and the vault token
-$> kubectl describe cm trousseau-config -n kube-system
-Name:         trousseau-config
-Namespace:    kube-system
-Labels:       <none>
-Annotations:  <none>
+# copy the encrpytion provider config to the minikube host
+$> minikube cp ./vault-k8s/files/encryption_provider_config.yml vault-playground:/opt/kms/encryption_provider_config.yml
 
-Data
-====
-cfg:
-----
-provider: vault
-vault:
-  keynames:
-    - kms
-  address: https://host.minikube.internal
-  token: hvs.CAESIJGPZdckGe6vN3-bMUzBmT3XywsQ8eNMWZljladJKsszGh4KHGh2cy5Tb3dpQjNjOEJuWHM2cVk2anhNcWtFSEQ # periodic & orphan token
-
-# Troussea creates a unix socket on the minikube host
-$> minikube ssh "ls -la /opt/trousseau-kms"
-vaultkms.socket
+# configure kube-api-server
+$> minikube ssh
+minikube> sudo -i
+minikube> vim.tiny /etc/kubernetes/manifests/kube-apiserver.yaml
 ```
 
-### Enabling Troussea as a KMS Provider
+#### pass the encryption provider config:
+
+```yaml
+# ...
+spec:
+  containers:
+  - command:
+    - kube-apiserver
+    # enabling the encryption provider config
+    - --encryption-provider-config=/opt/encryption_provider_config.yml
+# ...
+```
+
+#### mount the `vaultkms.socket` at `/opt/kms`:
+
+```yaml
+# ....
+volumeMounts:
+    - name: kms
+      mountPath: /opt
+volumes:
+  - name: kms
+    hostPath:
+      path: /opt/
+# ....
+```
+
+### wait for kube-apiserver restart
 ```bash
-# create cfg dir
-$> minikube ssh "sudo mkdir /opt/cfg"
-
-# copy encryption config
-$> minikube cp ./k8s-minikube/files/encryption_provider_config.yml vault-playground:/opt/cfg/encryption_provider_config.yml
-
-# copy kube-api config to static pod dir
-$> minikube cp ./k8s-minikube/files/kube-api-server.yml vault-playground:/etc/kubernetes/manifests/kube-apiserver.yaml
-
-# wait for all pods running
-$> kubectl get pod -n kube-system
-NAME                                       READY   STATUS    RESTARTS      AGE
-coredns-787d4945fb-5fcwd                   1/1     Running   0             5m
-etcd-vault-playground                      1/1     Running   0             5m15s
-kube-apiserver-vault-playground            1/1     Running   0             19s      # api server restarted
-kube-controller-manager-vault-playground   1/1     Running   0             5m13s
-kube-proxy-vqlvn                           1/1     Running   0             5m
-kube-scheduler-vault-playground            1/1     Running   0             5m14s
-storage-provisioner                        1/1     Running   3 (36s ago)   5m13s
-trousseau-kms-provider-jrflz               1/1     Running   0             4m28s
+$> watch kubectl get po -n kube-system
+NAME                                       READY   STATUS             RESTARTS      AGE
+coredns-5dd5756b68-2bfvj                   1/1     Running            0             14m
+etcd-vault-playground                      1/1     Running            0             14m
+kube-apiserver-vault-playground            0/1     Running            1 (29s ago)   27s # restarted
+kube-controller-manager-vault-playground   1/1     Running            0             14m
+kube-proxy-bvbbh                           1/1     Running            0             14m
+kube-scheduler-vault-playground            1/1     Running            0             14m
+vault-kubernetes-kms                       1/1     Running            0             10m
 ```
 
 ### Verify Secrets are now encrypted
@@ -110,7 +112,12 @@ trousseau-kms-provider-jrflz               1/1     Running   0             4m28s
 $> kubectl create secret generic secret-post-deploy -n default --from-literal=key=value
 
 # show secret in etcd
-$> kubectl -n kube-system exec etcd-vault-playground -- sh -c "ETCDCTL_API=3 etcdctl --endpoints=https://127.0.0.1:2379 --cert /var/lib/minikube/certs/etcd/server.crt --key /var/lib/minikube/certs/etcd/server.key --cacert /var/lib/minikube/certs/etcd/ca.crt get /registry/secrets/default/secret-post-deploy" | hexdump -C
+$> kubectl -n kube-system exec etcd-vault-playground -- sh -c "ETCDCTL_API=3 etcdctl \
+    --endpoints=https://127.0.0.1:2379 \
+    --cert /var/lib/minikube/certs/etcd/server.crt \
+    --key /var/lib/minikube/certs/etcd/server.key \
+    --cacert /var/lib/minikube/certs/etcd/ca.crt \
+    get /registry/secrets/default/secret-post-deploy" | hexdump -C
 00000000  2f 72 65 67 69 73 74 72  79 2f 73 65 63 72 65 74  |/registry/secret|
 00000010  73 2f 64 65 66 61 75 6c  74 2f 73 65 63 72 65 74  |s/default/secret|
 00000020  2d 70 6f 73 74 2d 64 65  70 6c 6f 79 0a 6b 38 73  |-post-deploy.k8s|

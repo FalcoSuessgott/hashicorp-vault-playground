@@ -87,7 +87,6 @@ provider "kubectl" {
   load_config_file = false
 }
 
-
 provider "helm" {
   kubernetes {
     host                   = try(module.minikube[0].kubeconfig.host, null)
@@ -97,7 +96,6 @@ provider "helm" {
   }
 }
 
-# Uncomment for the Boundary Lab
 provider "boundary" {
   addr = "http://127.0.0.1:9200"
   recovery_kms_hcl = try(<<EOT
