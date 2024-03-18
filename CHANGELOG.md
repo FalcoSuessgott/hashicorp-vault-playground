@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.13.0](https://github.com/FalcoSuessgott/hashicorp-vault-playground/compare/v1.12.0...v1.13.0) (2024-03-18)
+
+
+### Features
+
+* **kms:** use vault-kms-plugin ([#58](https://github.com/FalcoSuessgott/hashicorp-vault-playground/issues/58)) ([a5a4927](https://github.com/FalcoSuessgott/hashicorp-vault-playground/commit/a5a49275990cbd02668d943a96bdbe706847695f))
+
 ## [1.12.0](https://github.com/FalcoSuessgott/hashicorp-vault-playground/compare/v1.11.0...v1.12.0) (2024-02-05)
 
 
