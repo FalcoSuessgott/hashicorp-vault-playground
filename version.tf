@@ -44,7 +44,7 @@ terraform {
     }
     http = {
       source  = "hashicorp/http"
-      version = "3.4.2"
+      version = "3.4.3"
     }
     boundary = {
       source  = "hashicorp/boundary"
