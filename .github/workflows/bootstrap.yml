@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: hashicorp/setup-terraform@v3
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
     - run: |
         terraform init
         terraform apply -target=module.boundary -auto-approve
